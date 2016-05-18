@@ -1,13 +1,17 @@
 class Solution {
 public:
-    int trap(vector<int>& height) 
-    {
-        int len = height.size();
-        vector<int> leftmax(len),rightmax(len);
-        for(int i = 0; i < len; ++i)
+    void rotate(vector<vector<int>>& matrix) {
+        int row = matrix.size(), col = matrix[0].size();
+        for(int i = 0; i < row; ++i)
         {
-            if(i == 0) leftmax[0] = 0;
-            
+            for(int j = 0; i + j < row - 1; ++j)
+            {
+                swap(matrix[i][j], matrix[col - 1 - j][row - 1 - i]);
+            }
         }
+        for(int i = 0; i < row / 2; ++i)
+            for(int j = 0; j < col; ++j)
+                swap(matrix[row - 1 - i][j],matrix[i][j]);
+        return;
     }
 };
