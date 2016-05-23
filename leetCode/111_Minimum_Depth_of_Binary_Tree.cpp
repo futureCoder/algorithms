@@ -10,6 +10,11 @@
 class Solution {
 public:
     int minDepth(TreeNode* root) {
-        
+        if(!root) return 0;
+        int left, right;
+        left = minDepth(root->left);
+        right = minDepth(root->right);
+        if((!left || !right) && (left || right)) return (left == 0 ? right : left) + 1;
+        return min(left,right) + 1;
     }
 };
