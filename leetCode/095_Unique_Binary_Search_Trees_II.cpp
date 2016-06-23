@@ -9,6 +9,9 @@
  */
 class Solution {
 public:
+	void generateTrees() {
+		
+	}
     vector<TreeNode*> generateTrees(int n) {
         
     }
