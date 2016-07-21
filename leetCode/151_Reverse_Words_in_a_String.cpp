@@ -1,20 +1,19 @@
 class Solution {
 public:
-	template<typename ForwardIterator>
-	void reverseWord(ForwardIterator first, ForwardIterator last) {
-		last = prev(last);
-		while(first != last)
-			swap(first++, last--);
-	}
     void reverseWords(string &s) {
-        auto first = s.begin(), last = s.end();
-        reverseWord(first, last);
-        for(last = s.begin(); last != s.end();)
+        reverse(s.begin(), s.end());
+        int storeIndex = 0;
+        for (int i = 0; i < s.size(); i++)
         {
-        	first = last;
-        	while(last != s.end() && *last != ' ') ++last;
-        	reverseWord(first, last);
+            if (s[i] != ' ') 
+            {
+                if (storeIndex != 0) s[storeIndex++] = ' ';
+                int j = i;
+                while (j < s.size() && s[j] != ' ') { s[storeIndex++] = s[j++]; }
+                reverse(s.begin() + storeIndex - (j - i), s.begin() + storeIndex);
+                i = j;
+            }
         }
-        return ;
+        s.erase(s.begin() + storeIndex, s.end());
     }
 };
