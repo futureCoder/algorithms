@@ -6,7 +6,7 @@ public:
         for(int i = 0; i < m; ++i)
             for(int j = 0; j < n; ++j) 
                 if(board[i][j] == word[0]) {
-                    ret |= BFS(board, word, i, j, 0);
+                    ret = BFS(board, word, i, j, 0);
                     if(ret)
                         return ret;
                 }
@@ -14,8 +14,8 @@ public:
                     continue;
         return ret;
     }
-    bool BFS(vector<vector<char>>& board, const string &word, const int &i, const int &j, const int &word_idx) {
-        if(word_idx >= word.size() - 1)
+    bool BFS(vector<vector<char>>& board, const string &word, const int &x, const int &y, const int &word_idx) {
+        if(word_idx == word.size() - 1)
             return true;
 
         const int m = board.size(), n = board[0].size();
@@ -29,32 +29,27 @@ public:
                 return false;
             return true;
         };
-        auto state_expand = [&](const state_t &t) {
-            const int x = t.first, y = t.second;
-            vector<state_t> vec;
+        auto state_expand = [&]() {
             state_t ex[4] = {{x - 1, y}, {x + 1, y}, {x, y - 1}, {x, y + 1}};
             for(int i = 0; i < 4; ++i) {
-                if(state_is_valid(ex[i])) {
-                    vec.push_back(ex[i]);
-                }
+                if(state_is_valid(ex[i]))
+                    q.push(ex[i]);
             }
-            return vec;
         };
+        state_expand();
 
-        state_t cur = {i, j};
-        auto ex = state_expand(cur);
-        for(auto i : ex)
-            q.push(i);
-
-        auto tmp = board[i][j];
-        board[i][j] = 0;
+        auto tmp = board[x][y];
+        board[x][y] = 0;
 
         while(!q.empty()) {
             auto k = q.front();
             q.pop();
-            ret |= BFS(board, word, k.first, k.second, word_idx + 1);
+            if((ret |= BFS(board, word, k.first, k.second, word_idx + 1)))
+            	break;
+            else
+            	continue;
         }
-        board[i][j] = tmp;
+        board[x][y] = tmp;
         return ret;
     }
 };
