@@ -14,7 +14,7 @@ public:
      */
     RandomListNode *copyRandomList(RandomListNode *head) {
         if(NULL == head)
-        	return NULL;
+            return NULL;
         RandomListNode *cur = head;
         while(cur) {
             RandomListNode *node = new RandomListNode(cur->label);
@@ -23,11 +23,23 @@ public:
             cur = node->next;
         }
         cur = head;
-        while(cur)
-            cur->next->random = cur->random->next;
-        RandomListNode *ret = cur->next, *pCopy = cur->next;
         while(cur) {
-            pCopy
+            if(cur->random)     //Caution : verify cur->random 
+                cur->next->random = cur->random->next;
+            cur = cur->next->next;
         }
+        cur = head;
+        RandomListNode *ret = new RandomListNode(-1);
+        RandomListNode *pCopy = ret;
+        while(cur) {
+            pCopy->next = cur->next;
+            cur->next = cur->next->next;
+            cur = cur->next;
+            pCopy = pCopy->next;
+        }
+        pCopy = ret;
+        ret = ret->next;
+        free(pCopy);
+        return ret;
     }
 };
