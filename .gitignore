@@ -3,3 +3,4 @@ test.c
 leetCode/test.cpp
 leetcode/test*.*
 *.o
+*.exe
