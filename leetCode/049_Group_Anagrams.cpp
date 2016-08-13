@@ -30,6 +30,8 @@ public:
 				else {
 					++strs_index;
 				}
+				for(auto i : tmp)
+					cout << i << endl;
 			}
 			ret.push_back(tmp);
 		}
