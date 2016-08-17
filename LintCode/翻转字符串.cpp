@@ -7,16 +7,20 @@ public:
     string reverseWords(string s) {
         if(s.empty())
         	return s;
-        int curIdx = 0, start, end, len = s.size();
-        for(start = 0, end = 0;end < s.size();) {
-        	while(start < len && s[start] == ' ')
-        		++start;
-        	end = start;
-        	while(end < len && s[end] != ' ')
-        		++end;
+        reverse(s.begin(), s.end());
+        int storeIdx = 0;
+        for(int i = 0; i < s.size(); ++i) {
+        	if(' ' != s[i]) {
+        		if(0 != storeIdx)
+        			s[storeIdx++] = ' ';
+        		int j = i;
+        		while(j < s.size() && s[j] != ' ')
+        			s[storeIdx++] = s[j++];
+        		reverse(s.begin() + storeIdx - (j - i), s.begin() + storeIdx);
+        		i = j;
+        	}
         }
-    }
-    void reverse(string &s, int targetIdx, int start, int end) {
-
+        s.erase(s.begin() + storeIdx, s.end());
+        return s;
     }
 };
