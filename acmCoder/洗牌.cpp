@@ -32,11 +32,10 @@ int main() {
 			for(int i = 0; i < k; ++i)
 				xipai(myvec, n);
 			for(int i = 0; i < 2 *n; ++i) {
-				char c = (i == 2 *n - 1) ? '\n' : ' ';
+				char c = (i == n - 1) ? '\n' : ' ';
 				cout << myvec[i] << c;
 			}
 		}
 	}
 }
-
 

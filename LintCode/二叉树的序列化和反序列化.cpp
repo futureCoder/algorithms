@@ -40,15 +40,23 @@ public:
      * "serialize" method.
      */
     TreeNode *deserialize(string data) {
-
+        int start = 0, end = data.size();
+        return deserialize(data, start, end);
     }
     TreeNode *deserialize(string data, int &start, int end) {
-        if('!' == data[start]) {
+        if(start == end)
+            return NULL;
+        if('#' == data[start]) {
             start += 2;
             return NULL;
         }
         int idx = data.find("!", start);
-        if(1 == idx - start && data[start])
-            
+        int curNum;
+        curNum = stoi(data.substr(start, idx - start));
+        start = idx + 1;
+        TreeNode *root = new TreeNode(curNum);
+        root->left = deserialize(data, start, end);
+        root->right = deserialize(data, start, end);
+        return root;
     }
 };
