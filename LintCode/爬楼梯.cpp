@@ -7,6 +7,12 @@ public:
     int climbStairs(int n) {
     	if(n < 2)
     		return 1;
-        int a = 1, b = 1;
+        int a = 2, b = 1, tmp;
+        for(int i = 2; i < n; ++i) {
+        	tmp = a;
+        	a = a + b;
+        	b = tmp;
+        }
+        return a;
     }
 };
