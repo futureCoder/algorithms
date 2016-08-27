@@ -20,6 +20,17 @@ class Solution {
      */
 public:
     TreeNode *buildTree(vector<int> &inorder, vector<int> &postorder) {
-        // write your code here
+        return buildTree(inorder, postorder, 0, inorder.size() - 1, 0, postorder.size() - 1);
+    }
+    TreeNode *buildTree(vector<int> &inorder, vector<int> &postorder, int instart, int inend, int poststart, int postend) {
+    	if(instart > inend || poststart > postend)
+    		return NULL;
+    	TreeNode *root = new TreeNode(postorder[postend]);
+    	int idx = instart;
+    	while(inorder[idx] != postorder[postend])
+    		++idx;
+    	root->left = buildTree(inorder, postorder, instart, idx - 1, poststart, poststart + (idx - 1 - instart));
+    	root->right = buildTree(inorder, postorder, idx + 1, inend, poststart + idx - instart, postend - 1);
+    	return root;
     }
 };
