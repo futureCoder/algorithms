@@ -6,7 +6,6 @@ public:
     	++cnt;
     	if(cnt & 0x1) {
     		if(right.empty()) {
-    			++cnt;
     			return ;
     		}
     		if(left.top() > right.top()) {
