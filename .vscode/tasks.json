@@ -1,0 +1,8 @@
+{
+    "version": "0.1.0",
+    "command": "cmd",
+    "args": [
+        "/c", 
+        "(setlocal ENABLEDELAYEDEXPANSION)&(@set path=C:\\MinGw\\bin;)&&(g++ -g ${file} -o ${file}.exe )&(exit !errorlevel!)"
+    ]
+}
