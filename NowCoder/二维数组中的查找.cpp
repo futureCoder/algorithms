@@ -12,6 +12,7 @@ public:
     		}
     		else if(array[i][j] > target)
     			--j;
+
     		else
     			++i;
     	}

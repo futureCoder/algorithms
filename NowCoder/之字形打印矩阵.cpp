@@ -4,6 +4,7 @@ public:
     	bool leftToRight = true;
     	int step = 1;
     	vector<int> ret;
+
     	for(int i = 0; i < n; ++i) {
     		for(int j = leftToRight ? 0 : m - 1; 0 <= j && j < m ; j += step) {
     			ret.push_back(mat[i][j]);
@@ -11,6 +12,7 @@ public:
     		leftToRight = !leftToRight;
     		step *= -1;
     	}
+
     return ret;
     }
 };
