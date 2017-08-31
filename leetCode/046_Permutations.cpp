@@ -1,14 +1,14 @@
 class Solution {
 public:
-	void permute(vector<int>& nums, int k, int m, vector<vector<int>>& ret) {
-		if(k == m) {
-			ret.push_back(nums);
+	void permute(vector<int>& nums, int start, int end, vector<vector<int>>& ret) {
+		if(start == end) {
+			ret.push_bacstart(nums);
 			return;
 		}
-		for(int i = k; i < m; ++i) {
-			swap(nums[i], nums[k]);
-			permute(nums, k + 1, m, ret);
-			swap(nums[i], nums[k]);
+		for(int i = start; i < end; ++i) {
+			swap(nums[i], nums[start]);
+			permute(nums, start + 1, end, ret);
+			swap(nums[i], nums[start]);
 		}
 	}
     vector<vector<int>> permute(vector<int>& nums) {
