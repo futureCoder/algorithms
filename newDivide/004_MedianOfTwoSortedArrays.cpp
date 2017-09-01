@@ -15,6 +15,32 @@
 class Solution {
 public:
     double findMedianSortedArrays(vector<int>& nums1, vector<int>& nums2) {
-        
+        int m = nums1.size(), n = nums2.size();
+        int mid = (m + n) >> 1;
+        if(m < mid)
+        {
+            return nums2[mid - m];
+        }
+        if(n < mid)
+        {
+            return nums1[mid - n];
+        }
+
+        int find_Kth_InSortedArrays(vector<int>& nums1, vector<int>& nums2, int m, int n, int k)
+        {
+            if(m < k)
+            {
+                return nums2[n - k];
+            }
+        }
+
+        int lowwer_findMedianSortedArrays(vector<int>& nums1, vector<int>& nums2, int m, int n)
+        {
+
+        }
+        int upper_findMedianSortedArrays(vector<int>& nums1, vector<int>& nums2, int m, int n)
+        {
+            
+        }
     }
 };
