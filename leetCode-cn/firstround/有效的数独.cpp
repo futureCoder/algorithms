@@ -52,20 +52,22 @@ static const auto __ = []()
 class Solution {
 public:
     bool isValidSudoku(vector<vector<char>>& board) {
-        
+        return HorizontalVertical(board) && Matrix3x3(board);
     }
     bool HorizontalVertical(vector<vector<char>>& board)
     {
         for(int i = 0; i < board.size(); ++i)
         {
-            int bitsH:9 = 0;
-            int bitsV:9 = 0;
+            int bitsH = 0;
+            int bitsV = 0;
             for(int j = 0; j < board[i].size(); ++j)
             {
-                if(board[i][j] != "." && bitsH & 1 << board[i][j] - "1")
+                if(board[i][j] != '.' && bitsH & 1 << (board[i][j] - '0'))
                     return false;
-                if(board[i][j] != "." && bitsV & 1 << board[j][i] - "1")
+                if(board[j][i] != '.' && bitsV & 1 << (board[j][i] - '0'))
                     return false;
+                bitsH |= 1 << (board[i][j] - '0');
+                bitsV |= 1 << (board[j][i] - '0');
             }
         }
         return true;
@@ -74,7 +76,24 @@ public:
     {
         auto lamda = [=](int k) -> bool 
         {
-            
+            int bits = 0;
+            int row = 3 * (k / 3), col = 3 * (k % 3);
+            for(int i = row; i < row + 3; ++i)
+            {
+                for(int j = col; j < col + 3; ++j)
+                {
+                    if(board[i][j] != '.' && bits & 1 << (board[i][j] - '0'))
+                        return false;
+                    bits |= 1 << (board[i][j] - '0');
+                }
+            }
+            return true;
+        };
+        for(int k = 0; k < 9; ++k)
+        {
+            if(!lamda(k))
+                return false;
         }
+        return true;
     }
 };
