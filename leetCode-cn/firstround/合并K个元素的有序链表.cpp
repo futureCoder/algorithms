@@ -1,8 +1,13 @@
 /*
-将两个有序链表合并为一个新的有序链表并返回。新链表是通过拼接给定的两个链表的所有节点组成的。 
-示例：
-输入：1->2->4, 1->3->4
-输出：1->1->2->3->4->4
+合并 k 个排序链表，返回合并后的排序链表。请分析和描述算法的复杂度。
+示例:
+输入:
+[
+  1->4->5,
+  1->3->4,
+  2->6
+]
+输出: 1->1->2->3->4->4->5->6
 */
 /**
  * Definition for singly-linked list.
@@ -20,6 +25,24 @@ static const auto __ = []()
 }();
 class Solution {
 public:
+    ListNode* mergeKLists(vector<ListNode*>& lists) {
+        int k = lists.size();
+        if(0 == k)
+            return nullptr;
+        while(k > 1)
+        {
+            int i = 0;
+            while(i + 1 < k)
+            {
+                lists[i / 2] = mergeTwoLists(lists[i], lists[i + 1]);
+                i += 2;
+            }
+            if(k & 0x1)
+                lists[i / 2] = lists[i];
+            k = (k + 1) / 2;
+        }
+        return lists[0];
+    }
     ListNode* mergeTwoLists(ListNode* l1, ListNode* l2) {
         ListNode **cur = &l1;
         while(*cur && l2)
