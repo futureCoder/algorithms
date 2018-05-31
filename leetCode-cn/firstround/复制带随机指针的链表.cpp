@@ -27,12 +27,19 @@ public:
 
     void constructRandomList(RandomListNode *head)
     {
-        while(head)
+        RandomListNode *cur = head;
+        while(cur)
         {
-            RandomListNode *newNode = new RandomListNode(head->label);
-            newNode->next = head->next;
-            head->next = newNode;
-            head = newNode->next;
+            RandomListNode *newNode = new RandomListNode(cur->label);
+            newNode->next = cur->next;
+            cur->next = newNode;
+            cur = newNode->next;
+        }
+        cur = head;
+        while(cur)
+        {
+            cur->next->random = cur->random ? cur->random->next : nullptr;
+            cur = cur->next->next;
         }
     }
 
@@ -44,7 +51,6 @@ public:
             RandomListNode *cur = head->next;
             RandomListNode *nextHead = cur->next;
             cur->next = nextHead ? nextHead->next : nullptr;
-            cur->random = head->random ? head->random->next : nullptr;
             head->next = nextHead;
             head = nextHead;
         }
