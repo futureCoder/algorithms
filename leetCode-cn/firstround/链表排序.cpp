@@ -41,8 +41,8 @@ public:
         }
         ListNode *l1 = head, *l2 = *slow;
         *slow = nullptr;
-        sortList(l2);
-        sortList(l1);
+        l1 = sortList(l1);
+        l2 = sortList(l2);
         return mergeSort(l1, l2);
     }
     ListNode* mergeSort(ListNode* l1, ListNode* l2)
