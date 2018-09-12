@@ -14,6 +14,14 @@
  *     ListNode(int x) : val(x), next(NULL) {}
  * };
  */
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode(int x) : val(x), next(NULL) {}
+ * };
+ */
 static const auto __ = []()
 {
     ios::sync_with_stdio(false);
@@ -23,32 +31,29 @@ static const auto __ = []()
 class Solution {
 public:
     ListNode* reverseList(ListNode* head) {
-        if(!head)
-            return head;
-        return reverseList_Recursive(head);
+        return reverseList_Recusive(head);
     }
-    ListNode* reverseList_Iterative(ListNode* head) {
-        ListNode *ret = nullptr;
-        while(head)
+    ListNode* reverseList_Recusive(ListNode* head) {
+        return reverseList_Recusive(nullptr, head);
+    }
+
+    ListNode* reverseList_Recusive(ListNode* pre, ListNode* cur) {
+        if(nullptr == cur)
+            return pre;
+        ListNode* next = cur->next;
+        cur->next = pre;
+        return reverseList_Recusive(cur, next);
+    }
+
+    ListNode* reverseList_Iterative_HeadInsert(ListNode* head) {
+        ListNode* ret = nullptr;
+        while(nullptr != head)
         {
-            ListNode *tmp = head->next;
+            ListNode* next = head->next;
             head->next = ret;
             ret = head;
-            head = tmp;
+            head = next;
         }
         return ret;
-    }
-    ListNode* reverseList_Recursive(ListNode* head) {
-        return reverseList_Recursive(nullptr, head);
-    }
-    ListNode* reverseList_Recursive(ListNode* pre, ListNode* curr) {
-        ListNode *next = curr->next;
-        curr->next = pre;
-        if(nullptr == next)
-        {
-            curr->next = pre;
-            return curr;
-        }
-        return reverseList_Recursive(curr, next);
     }
 };
