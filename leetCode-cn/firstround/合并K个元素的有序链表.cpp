@@ -32,24 +32,26 @@ public:
         while(k > 1)
         {
             int i = 0;
-            while(i + 1 < k)
+            while(2 * i + 1 < k)
             {
-                lists[i / 2] = mergeTwoLists(lists[i], lists[i + 1]);
-                i += 2;
+                lists[i] = merge2Lists(lists[2 * i], lists[2 * i + 1]);
+                ++i;
             }
             if(k & 0x1)
-                lists[i / 2] = lists[i];
+            {
+                lists[i] = lists[2 * i];
+            }
             k = (k + 1) / 2;
         }
         return lists[0];
     }
-    ListNode* mergeTwoLists(ListNode* l1, ListNode* l2) {
-        ListNode **cur = &l1;
+    ListNode* merge2Lists(ListNode* l1, ListNode* l2) {
+        ListNode** cur = &l1;
         while(*cur && l2)
         {
             if((*cur)->val > l2->val)
             {
-                ListNode *tmp = *cur;
+                ListNode* tmp = *cur;
                 *cur = l2;
                 l2 = tmp;
             }
