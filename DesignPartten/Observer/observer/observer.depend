@@ -1,0 +1,25 @@
+# depslib dependency file v1.0
+1466137135 source:f:\codepractice\designpatten\observe\observer\main.cpp
+	<iostream>
+	"observer.h"
+
+1466137058 f:\codepractice\designpatten\observe\observer\observer.h
+	<list>
+	<iostream>
+	<string>
+	"Subject.h"
+
+1466137261 f:\codepractice\designpatten\observe\observer\subject.h
+	<string>
+	<list>
+	"observer.h"
+
+1466137078 f:\codepractice\designpatten\observe\observer\subject.cpp
+	"Observer.h"
+
+1466137056 source:f:\codepractice\designpatten\observe\observer\observer.cpp
+	"Observer.h"
+
+1466137078 source:f:\codepractice\designpatten\observe\observer\subject.cpp
+	"Observer.h"
+
