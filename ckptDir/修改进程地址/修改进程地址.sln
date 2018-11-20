@@ -1,0 +1,26 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 10.00
+# Visual Studio 2008
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "modifyer", "modifyer\modifyer.vcproj", "{0E921504-9809-4E46-BC74-B50F26426A01}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "modifyed", "modifyed\modifyed.vcproj", "{2505D0A4-9C1C-4C2B-A433-A61C2D9E4507}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+		Release|Win32 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{0E921504-9809-4E46-BC74-B50F26426A01}.Debug|Win32.ActiveCfg = Debug|Win32
+		{0E921504-9809-4E46-BC74-B50F26426A01}.Debug|Win32.Build.0 = Debug|Win32
+		{0E921504-9809-4E46-BC74-B50F26426A01}.Release|Win32.ActiveCfg = Release|Win32
+		{0E921504-9809-4E46-BC74-B50F26426A01}.Release|Win32.Build.0 = Release|Win32
+		{2505D0A4-9C1C-4C2B-A433-A61C2D9E4507}.Debug|Win32.ActiveCfg = Debug|Win32
+		{2505D0A4-9C1C-4C2B-A433-A61C2D9E4507}.Debug|Win32.Build.0 = Debug|Win32
+		{2505D0A4-9C1C-4C2B-A433-A61C2D9E4507}.Release|Win32.ActiveCfg = Release|Win32
+		{2505D0A4-9C1C-4C2B-A433-A61C2D9E4507}.Release|Win32.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
