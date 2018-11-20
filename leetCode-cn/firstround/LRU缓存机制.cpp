@@ -16,18 +16,19 @@ public:
     }
     
     int get(int key) {
-        DoubleLinkedListNode* node = _get(key);
-        return _VisitNode(node);
+        DoubleLinkedListNode** node = _get(key);
+        return _VisitNode(*node);
     }
     
     void put(int key, int value) {
-        HashLinkedListNode* hashNode = _get(key);
-        if(nullptr != hashNode)
+        HashLinkedListNode** hashNode = _get(key);
+        if(nullptr != *hashNode)    //已存在
         {
-            hashNode->pKVNode->value = value;
-            _VisitNode(hashNode->pKVNode);
+            (*hashNode)->pKVNode->value = value;    //更新现有key-value
+            _VisitNode((*hashNode)->pKVNode);       //调整dlList
             return;
         }
+
         DoubleLinkedListNode* dlNode = nullptr;
         if(m_nCurr < m_nMax)
         {
@@ -55,15 +56,39 @@ public:
         
     }
 
-    HashLinkedListNode* _get(int key)
+    HashLinkedListNode* _GetHashLinkedListNode()
+    {
+        if(m_nCurr == m_nMax)
+        {
+            return _RemoveLRUNodeInHash();
+        }
+        DoubleLinkedListNode* dlNode = new do
+    }
+
+    HashLinkedListNode* _RemoveLRUNodeInHash()
+    {
+        DoubleLinkedListNode* dlNode = _RemoveLRUNodeInDLList();
+        if(nullptr == dlNode)
+            return nullptr;
+        HashLinkedListNode** root = _get(dlNode->key);
+        HashLinkedListNode* hashNode = *root;
+        if(hashNode)
+        {
+            *root = hashNode->next;
+            hashNode->next = nullptr;
+        }
+        return hashNode;
+    }
+
+    HashLinkedListNode** _get(int key)
     {
         int pos = _HashFun(key);
-        HashLinkedListNode* root = m_vHash[pos];
-        while(root)
+        HashLinkedListNode** root = &m_vHash[pos];
+        while(*root)
         {
-            if(null != root->pKVNode && root->pKVNode->key == key)
+            if(nullptr != (*root)->pKVNode && (*root)->pKVNode->key == key)
                 break;
-            root = root->next;
+            root = &((*root)->next);
         }
         return root;
     }
@@ -87,7 +112,7 @@ public:
         return m_pHead->val;
     }
 
-    DoubleLinkedListNode* DetachTailNode()
+    DoubleLinkedListNode* _RemoveLRUNodeInDLList()
     {
         if(m_pHead == m_pHead->prev)
             return m_pHead;
