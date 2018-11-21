@@ -32,39 +32,12 @@ public:
 
     // Encodes a tree to a single string.
     string serialize(TreeNode* root) {
-        std::string ret;
-        std::queue<TreeNode*> q;
-        q.push(root);
-        auto enqueue_next_layer = [](const TreeNode *node) -> void {
-            if(!node)
-                return;
-            q.push(node->left);
-            q.push(node->right);
-        }
-        while(!q.empty())
-        {
-            auto currNode = q.top();
-            q.pop();
-            enqueue_next_layer(currNode);
-            if(currNode)
-            {
-                ret.append("," + std::ToString(currNode->val));
-            }
-            else
-            {
-                ret.append(",null");
-            }
-        }
-        return 
+        
     }
 
     // Decodes your encoded data to tree.
     TreeNode* deserialize(string data) {
-        size_type curPos = 0;
-        auto get_next_node = []() -> TreeNode* {
-            auto idx = data.find(',');
-            if(idx != )
-        }
+        
     }
 };
 
