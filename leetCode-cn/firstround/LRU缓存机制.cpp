@@ -8,6 +8,8 @@ static const auto io_sync_off = []()
 }();
 class LRUCache {
 public:
+    class HashLinkedListNode;
+    class DoubleLinkedListNode;
     LRUCache(int capacity) {
         m_nCurr = 0;
         m_pHead = nullptr;
@@ -16,8 +18,10 @@ public:
     }
     
     int get(int key) {
-        DoubleLinkedListNode** node = _get(key);
-        return _VisitNode(*node);
+        HashLinkedListNode** node = _get(key);
+        if(!(*node))
+            return -1;
+        return _VisitNode((*node)->pKVNode);
     }
     
     void put(int key, int value) {
@@ -28,46 +32,46 @@ public:
             _VisitNode((*hashNode)->pKVNode);       //调整dlList
             return;
         }
+        PutNewData(key, value);
+    }
 
-        DoubleLinkedListNode* dlNode = nullptr;
-        if(m_nCurr < m_nMax)
+    void PutNewData(int key, int value)
+    {
+        HashLinkedListNode* hashNode = _GetHashLinkedListNode(key, value);
+        int pos = _HashFun(key);
+        hashNode->next = m_vHash[pos];
+        m_vHash[pos] = hashNode;
+    }
+
+    HashLinkedListNode* _GetHashLinkedListNode(int key, int value)
+    {
+        DoubleLinkedListNode* dlNode = _GetDLNode(key, value);
+        HashLinkedListNode* hashNode = _RemoveLRUNodeInHash(dlNode);
+        if(nullptr == hashNode)
         {
-            dlNode = new DoubleLinkedListNode(value);
-            if(nullptr == m_pHead)
-            {
-                dlNode->next = dlNode;
-                dlNode->prev = dlNode;
-            }
-            else
-            {
-                dlNode->next = m_pHead;
-                dlNode->prev = m_pHead->prev;
-            }
-            m_pHead = dlNode;
+            hashNode = new HashLinkedListNode(dlNode);
+        }
+        return hashNode;
+    }
+
+    DoubleLinkedListNode* _GetDLNode(int key, int value)
+    {
+        DoubleLinkedListNode* ret = nullptr;
+        if(m_nCurr == m_nMax)
+        {
+            ret = _RemoveLRUNodeInDLList();
+            ret->key = key;
+            ret->value = value;
         }
         else
         {
-            dlNode = DetachTailNode();
-            dlNode->next = m_pHead;
-            dlNode->prev = m_pHead->prev;
-            m_pHead = dlNode;
+            ret = new DoubleLinkedListNode(key, value);
         }
-        hashNode = new HashLinkedListNode(dlNode);
-        
+        return ret;
     }
 
-    HashLinkedListNode* _GetHashLinkedListNode()
+    HashLinkedListNode* _RemoveLRUNodeInHash(DoubleLinkedListNode* dlNode)
     {
-        if(m_nCurr == m_nMax)
-        {
-            return _RemoveLRUNodeInHash();
-        }
-        DoubleLinkedListNode* dlNode = new do
-    }
-
-    HashLinkedListNode* _RemoveLRUNodeInHash()
-    {
-        DoubleLinkedListNode* dlNode = _RemoveLRUNodeInDLList();
         if(nullptr == dlNode)
             return nullptr;
         HashLinkedListNode** root = _get(dlNode->key);
@@ -100,8 +104,10 @@ public:
 
     int _VisitNode(DoubleLinkedListNode* node)
     {
+        if(nullptr == node)
+            return -1;
         if(node == m_pHead)
-            return node->val;
+            return node->value;
         //从链表中剥离node
         node->next->prev = node->prev;
         node->prev->next = node->next;
@@ -109,7 +115,7 @@ public:
         node->prev = m_pHead->prev;
         node->next = m_pHead;
         m_pHead = node;
-        return m_pHead->val;
+        return m_pHead->value;
     }
 
     DoubleLinkedListNode* _RemoveLRUNodeInDLList()
@@ -134,7 +140,7 @@ public:
             pKVNode = node;
             next = nullptr;
         }
-    }
+    };
 
     class DoubleLinkedListNode
     {
@@ -143,21 +149,22 @@ public:
         int value;
         DoubleLinkedListNode* prev;
         DoubleLinkedListNode* next;
-        DoubleLinkedListNode(int val)
+        DoubleLinkedListNode(int k, int v)
         {
-            value = val;
+            key = k;
+            value = v;
             prev = nullptr;
             next = nullptr;
         }
-        void SetNext(const DoubleLinkedListNode *node)
+        void SetNext(DoubleLinkedListNode *node)
         {
             next = node;
         }
-        void SetPrev(const DoubleLinkedListNode *node)
+        void SetPrev(DoubleLinkedListNode *node)
         {
-            prev = node
+            prev = node;
         }
-    }DoubleLinkedListNode;
+    };
 
     private:
     std::vector<HashLinkedListNode*> m_vHash;  //hash
