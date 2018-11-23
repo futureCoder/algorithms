@@ -2,6 +2,7 @@ class MyLinkedList {
 public:
     /** Initialize your data structure here. */
     MyLinkedList() {
+        m_nCount = 0;
         m_pHead = nullptr;
     }
     
@@ -12,14 +13,47 @@ public:
     
     /** Add a node of value val before the first element of the linked list. After the insertion, the new node will be the first node of the linked list. */
     void addAtHead(int val) {
-        
+        DLListNode* node = _GetDLNode(val);
+        if(nullptr == node)
+            return;
+        if(nullptr == m_pHead)
+        {
+            node->m_pNext = node;
+            node->m_pPrev = node;
+            m_pHead = node;
+            return node;
+        }
+        node->m_pNext = m_pHead;
+        node->m_pPrev = m_pHead->m_pPrev;
+        m_pHead->m_pPrev->m_pNext = node;
+        m_pHead->m_pPrev = node;
+        return node;
     }
     
     /** Append a node of value val to the last element of the linked list. */
     void addAtTail(int val) {
-        
+
     }
-    
+    DLListNode* _addAtTail(int val)
+    {
+        DLListNode* node = _GetDLNode(val);
+        if(nullptr == node)
+            return;
+        if(nullptr == m_pHead)
+        {
+            node->m_pNext = node;
+            node->m_pPrev = node;
+            m_pHead = node;
+            return node;
+        }
+        node->m_pNext = m_pHead;
+        node->m_pPrev = m_pHead->m_pPrev;
+
+        m_pHead->m_pPrev->m_pNext = node;
+        m_pHead->m_pPrev = node;
+        m_pHead = node;
+        return node;
+    }
     /** Add a node of value val before the index-th node in the linked list. If index equals to the length of linked list, the node will be appended to the end of linked list. If index is greater than the length, the node will not be inserted. */
     void addAtIndex(int index, int val) {
         
@@ -32,21 +66,12 @@ public:
 
     DLListNode* _GetDLNode(int val)
     {
-        DLListNode* ret = nullptr;
-        if(m_vTrashBuffer.size() > 0)
-        {
-            ret = m_vTrashBuffer.pop_back();
-            ret->m_nVal = val;
-        }
-        else
-        {
-            ret = new DLListNode(val);
-        }
+        DLListNode* ret = new DLListNode(val);
         return ret;
     }
 
     DLListNode* m_pHead;
-    std::vector<DLListNode*> m_vTrashBuffer;
+    int m_nCount;
     class DLListNode
     {
     public:
