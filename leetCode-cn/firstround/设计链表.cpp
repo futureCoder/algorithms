@@ -1,5 +1,6 @@
 class MyLinkedList {
 public:
+    class DLListNode;
     /** Initialize your data structure here. */
     MyLinkedList() {
         m_nCount = 0;
@@ -8,36 +9,44 @@ public:
     
     /** Get the value of the index-th node in the linked list. If the index is invalid, return -1. */
     int get(int index) {
-        if(0 <= index && index < m_nCount)
-        {
-            DLListNode* node = m_pHead;
-
-        }
-        return -1;
+        DLListNode* pNode = _GetNodeAtIndex(index);
+        if(nullptr == pNode)
+            return -1;
+        return pNode->m_nVal;
     }
     
     /** Add a node of value val before the first element of the linked list. After the insertion, the new node will be the first node of the linked list. */
     void addAtHead(int val) {
-        DLListNode* node = _addAtTail;
-        m_pHead = node;
+        addAtIndex(0, val);
     }
     
     /** Append a node of value val to the last element of the linked list. */
     void addAtTail(int val) {
-        _addAtTail(val);
+        addAtIndex(m_nCount, val);
     }
 
     /** Add a node of value val before the index-th node in the linked list. If index equals to the length of linked list, the node will be appended to the end of linked list. If index is greater than the length, the node will not be inserted. */
     void addAtIndex(int index, int val) {
         DLListNode* pNode = _GetNodeAtIndex(index);
         if(nullptr == pNode)
+        {
+            if(0 != m_nCount)
+                return;
+            DLListNode* pNewNode = _GetDLNode(val);
+            pNewNode->m_pPrev = pNewNode;
+            pNewNode->m_pNext = pNewNode;
+            m_pHead = pNewNode;
             return;
+        }
         DLListNode* pNewNode = _GetDLNode(val);
         if(nullptr == pNewNode)
             return;
         pNewNode->m_pPrev = pNode->m_pPrev;
         pNewNode->m_pNext = pNode;
+        pNode->m_pPrev->m_pNext = pNewNode;
         pNode->m_pPrev = pNewNode;
+        if(0 == index)
+            m_pHead = pNewNode;
     }
     
     /** Delete the index-th node in the linked list, if the index is valid. */
@@ -47,7 +56,8 @@ public:
             return;
         pNode->m_pPrev->m_pNext = pNode->m_pNext;
         pNode->m_pNext->m_pPrev = pNode->m_pPrev;
-        Delete pNode;
+        --m_nCount;
+        delete pNode;
     }
 
     DLListNode* _GetDLNode(int val)
@@ -55,34 +65,16 @@ public:
         DLListNode* ret = new DLListNode(val);
         return ret;
     }
-    DLListNode* _AddAtTail(int val)
-    {
-        DLListNode* node = _GetDLNode(val);
-        if(nullptr == node)
-            return;
-        if(nullptr == m_pHead)
-        {
-            node->m_pNext = node;
-            node->m_pPrev = node;
-            m_pHead = node;
-            return node;
-        }
-        node->m_pNext = m_pHead;
-        node->m_pPrev = m_pHead->m_pPrev;
-        m_pHead->m_pPrev->m_pNext = node;
-        m_pHead->m_pPrev = node;
-        ++m_nCount;
-        return node;
-    }
     DLListNode* _GetNodeAtIndex(int index)
     {
         if(0 <= index && index <= m_nCount)
         {
-            index %= m_nCount;
+            if(0 != m_nCount)
+                index %= m_nCount;
             DLListNode* pNode = m_pHead;
             while(index > 0)
             {
-                pNode = pNode->m_pNext);
+                pNode = pNode->m_pNext;
                 --index;
             }
             return pNode;
@@ -99,11 +91,11 @@ public:
         DLListNode* m_pNext;
         DLListNode(int val)
         {
-            m_nVal = v;
+            m_nVal = val;
             m_pPrev = nullptr;
             m_pNext = nullptr;
         }
-    }
+    };
 };
 
 /**
