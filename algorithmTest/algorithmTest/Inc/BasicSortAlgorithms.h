@@ -1,5 +1,5 @@
-#ifndef __basicsortalgorithms__
-#define __basicsortalgorithms__
+#ifndef __BASIC_SORT_ALGORITHMS__H_
+#define __BASIC_SORT_ALGORITHMS__H_
 #include <string>
 #include <vector>
 #include <queue>

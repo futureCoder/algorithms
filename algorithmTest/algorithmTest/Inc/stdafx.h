@@ -1,6 +1,5 @@
-
-#ifndef __STDAFX_H__
-
+#ifndef _STDAFX__H_
+#define _STDAFX__H_
 #include <stdio.h>
 #include <tchar.h>
 #include <iostream>

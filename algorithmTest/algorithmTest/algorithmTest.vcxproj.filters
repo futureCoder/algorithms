@@ -59,6 +59,12 @@
     <ClInclude Include="Inc\707_Design_Linked_List.h">
       <Filter>头文件\Leetcode</Filter>
     </ClInclude>
+    <ClInclude Include="Inc\706_Design_HashMap.h">
+      <Filter>头文件\Leetcode</Filter>
+    </ClInclude>
+    <ClInclude Include="Inc\HashMapDef.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Src\ListDef.inl">

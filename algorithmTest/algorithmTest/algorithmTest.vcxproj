@@ -105,6 +105,7 @@
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
+      <AdditionalIncludeDirectories>$(SolutionDir)\algorithmTest\Inc;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -155,10 +156,12 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Inc\146_LRU_Cache.h" />
+    <ClInclude Include="Inc\706_Design_HashMap.h" />
     <ClInclude Include="Inc\707_Design_Linked_List.h" />
     <ClInclude Include="Inc\algorithmsBasic.hpp" />
     <ClInclude Include="Inc\BasicAlgorithms.h" />
     <ClInclude Include="Inc\BasicSortAlgorithms.h" />
+    <ClInclude Include="Inc\HashMapDef.h" />
     <ClInclude Include="Inc\leetcode.h" />
     <ClInclude Include="Inc\ListDef.h" />
     <ClInclude Include="Inc\stdafx.h" />

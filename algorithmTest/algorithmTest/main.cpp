@@ -3,7 +3,6 @@
 #include "ThreadPool.h"
 namespace Solution 
 {
-	//class MyLinkedList;
 	int main()
 	{
 		MyLinkedList* obj = new MyLinkedList();
