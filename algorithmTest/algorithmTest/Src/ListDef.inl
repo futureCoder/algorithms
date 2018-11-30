@@ -88,6 +88,11 @@ namespace Solution
 	{
 		return popAtIndex(m_nCount - 1);
 	}
+    template<typename T>
+    DLListNode<T>* DoubleLinkedList<T>::pop_front()
+    {
+        return popAtIndex(0);
+    }
 	template <typename T>
 	DLListNode<T>* DoubleLinkedList<T>::_GetDLNode(T val)
 	{

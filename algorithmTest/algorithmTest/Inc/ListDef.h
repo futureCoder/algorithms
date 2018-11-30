@@ -51,6 +51,7 @@ namespace Solution
 
     	DLListNode<T>* popAtIndex(int index);
     	DLListNode<T>* pop_back();
+        DLListNode<T>* pop_front();
     	DLListNode<T>* _GetDLNode(T val);
     	DLListNode<T>* _GetNodeAtIndex(int index);
     	int size() { return m_nCount; }
