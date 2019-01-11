@@ -1,6 +1,7 @@
 #ifndef _HASH_MAP_DEF__H_
 #define _HASH_MAP_DEF__H_
 #include "stdafx.h"
+#include "ListDef.h"
 namespace Solution
 {
     //////////////////////////////////////////////////////////////////////////
@@ -35,20 +36,24 @@ namespace Solution
 
 
     template <typename KeyType, typename ValueType>
-    class HashLinkedList
+    class HashNode
     {
     public:
         typedef KeyType key_type;
         typedef ValueType value_type;
-        HashLinkedList();
-        virtual ~HashLinkedList();
-        DLListNode < std::pair<KeyType, ValueType>* m_pVal;
-        HashLinkedList<key_type, value_type>* m_pNext;
-    private:
-
+        HashNode(key_type key, value_type val):
+            m_key(key),
+            m_val(val),
+            m_pNext(nullptr)
+        {}
+        virtual ~HashNode()
+        {}
+        key_type m_key;
+        value_type m_val;
+        HashNode<key_type, value_type>* m_pNext;
     };
 
-    template <typename KeyType, typename ValueType>
+    template <typename KeyType, typename ValueType, typename HashFunc = _HashFunc<KeyType>>
     class HashMap {
     public:
         static const int _num_primes = 15;
@@ -64,46 +69,68 @@ namespace Solution
         {
             m_nCurr = 0;
             m_nMaxIndex = 0;
-            m_vHash.resize(_num_primes[m_nMaxIndex]);
+            m_vHash.resize(capacity());
         }
 
-        /** value will always be non-negative. */
+        //template
         void put(int key, int value) {
-
+            if (m_nCurr >= capacity())
+            {
+                size_t oldCapacity = capacity();
+                m_nMaxIndex = std::min(m_nMaxIndex + 1, _num_primes);
+                _resize(capacity());
+            }
+            size_t pos = _hash_func(key);
+            HashNode<key_type, value_type>* newNode = new HashNode<key_type, value_type>(key, value);
+            newNode->m_pNext = m_vHash[pos];
+            m_vHash[pos] = newNode;
         }
 
         /** Returns the value to which the specified key is mapped, or -1 if this map contains no mapping for the key */
         int get(int key) {
-
+            size_t pos = _hash_func(key);
+            const HashNode<key_type, value_type>* node = m_vHash[pos];
+            while (node)
+            {
+                if (node->m_key == key)
+                    return node->m_val;
+                node = node->m_pNext;
+            }
+            return -1;
         }
 
         /** Removes the mapping of the specified value key if this map contains a mapping for the key */
         void remove(int key) {
-
+            size_t pos = _hash_func(key);
+            const HashNode<key_type, value_type>* node = m_vHash[pos];
         }
 
     private:
-        void _hash_func(int key)
+        size_t _hash_func(KeyType key)
         {
-            return key % _num_primes[m_nMaxIndex];
+            return HashFunc(key, capacity);
+            //return key % _num_primes[m_nMaxIndex];
+        }
+
+        size_t capacity()
+        {
+            return _prime_list[m_nMaxIndex];
         }
 
         void _resize(int count)
         {
-            std::vector<DoubleLinkedList < std::pair<key_type, value_type> > > tempHash = new
-                std::vector<DoubleLinkedList < std::pair<key_type, value_type> > >(count);
+            std::vector<HashNode<key_type, value_type>*> tempHash = new
+                std::vector<HashNode<key_type, value_type>*>(count);
             tempHash.swap(m_vHash);
-            for (int i = 0; i < tempHash.size(); ++i)
+            for (std::vector<HashNode<key_type, value_type>*>::iterator iter = tempHash.begin(); iter != tempHash.end(); ++iter)
             {
-                DoubleLinkedList < std::pair<key_type, value_type>>& dlList = tempHash[i];
-                DLListNode<std::pair<key_type, value_type>> dlNode =  dlList.pop_front();
-                
+                put(iter->m_key, iter->m_val);
             }
         }
 
-        std::vector<DoubleLinkedList < std::pair<key_type, value_type> > > m_vHash;
-        int m_nCurr;
-        int m_nMaxIndex;
+        std::vector<HashNode<key_type, value_type>*> m_vHash;
+        size_t m_nCurr;
+        size_t m_nMaxIndex;
     };
 }
-#endif // !__LIST_DEF_H__
+#endif // !_HASH_MAP_DEF__H_
