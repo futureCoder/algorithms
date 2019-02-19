@@ -18,5 +18,5 @@ namespace Solution
 }
 
 int main() {
-	Solution::main();
+	
 }
