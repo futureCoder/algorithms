@@ -34,7 +34,15 @@ namespace Solution {
 
 int main()
 {
-    Solution::main();
+    std::vector<int> vec(100, 0);
+    int start = 0, end = vec.size();
+    for (; start < end;)
+    {
+        int mid = start + std::ceil(end - start) / 2;
+        std::cout << "Mid = " << mid << endl;
+        end = mid + 1;
+    }
+    system("Pause");
 }
 //
 //void makeNext(string needle, vector<int> &next)
