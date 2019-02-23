@@ -32,16 +32,50 @@ namespace Solution {
     }
 }
 
+class Solution1 {
+public:
+    int searchInsert(vector<int>& nums, int target) {
+        int start = 0, end = nums.size() - 1;
+        while (start + 1 < end)
+        {
+            int mid = (end - start) / 2 + start;
+            if (target == nums[mid])
+            {
+                return mid;
+            }
+            if (target < nums[mid])
+            {
+                end = mid;
+            }
+            else
+            {
+                start = mid;
+            }
+        }
+        if (target == nums[start])
+        {
+            return start;
+        }
+        if (target == nums[end])
+        {
+            return end;
+        }
+        if (nums[end] < target)
+        {
+            return end + 1;
+        }
+        return start;
+    }
+};
+
 int main()
 {
-    std::vector<int> vec(100, 0);
-    int start = 0, end = vec.size();
-    for (; start < end;)
-    {
-        int mid = start + std::ceil(end - start) / 2;
-        std::cout << "Mid = " << mid << endl;
-        end = mid + 1;
-    }
+    std::vector<int> vec1 = { 1,3,5,6 };
+    Solution1 s;
+    cout << s.searchInsert(vec1, 5) << endl;
+    cout << s.searchInsert(vec1, 2) << endl;
+    cout << s.searchInsert(vec1, 7) << endl;
+    cout << s.searchInsert(vec1, 0) << endl;
     system("Pause");
 }
 //
