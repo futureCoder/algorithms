@@ -34,48 +34,45 @@ namespace Solution {
 
 class Solution1 {
 public:
-    int searchInsert(vector<int>& nums, int target) {
-        int start = 0, end = nums.size() - 1;
-        while (start + 1 < end)
+    string longestPalindrome(string s) {
+        if (s.size() <= 1)
+            return s;
+        string manacherStr = Manacher_PreProcess(s);
+        std::vector<int> r(manacherStr.size(), 1);
+        int max = 1, pos = 1, posMax = 1;
+        for (int i = 2; i < manacherStr.size(); ++i)
         {
-            int mid = (end - start) / 2 + start;
-            if (target == nums[mid])
+            if (i < max)
             {
-                return mid;
+                r[i] = min(r[2 * pos - i], max - i);
             }
-            if (target < nums[mid])
-            {
-                end = mid;
-            }
-            else
-            {
-                start = mid;
-            }
+            while (manacherStr[i - r[i]] == manacherStr[i + r[i]])
+                ++r[i];
+            if (r[i] > r[posMax])
+                posMax = i;
         }
-        if (target == nums[start])
+        int originPos = (posMax - r[posMax] + 1) / 2;
+        int originLen = r[posMax] - 1;
+        return s.substr(originPos, originLen);
+    }
+    string Manacher_PreProcess(const string& s)
+    {
+        string ret = "$#";
+        for (auto c : s)
         {
-            return start;
+            ret += c;
+            ret += '#';
         }
-        if (target == nums[end])
-        {
-            return end;
-        }
-        if (nums[end] < target)
-        {
-            return end + 1;
-        }
-        return start;
+        return ret;
     }
 };
 
 int main()
 {
     std::vector<int> vec1 = { 1,3,5,6 };
+    std::string str = "ccc";
     Solution1 s;
-    cout << s.searchInsert(vec1, 5) << endl;
-    cout << s.searchInsert(vec1, 2) << endl;
-    cout << s.searchInsert(vec1, 7) << endl;
-    cout << s.searchInsert(vec1, 0) << endl;
+    std::cout << s.longestPalindrome(str) << std::endl;
     system("Pause");
 }
 //
