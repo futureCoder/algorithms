@@ -12,6 +12,8 @@
 #include <unordered_map>
 #include <queue>
 #include <stack>
+#include <bitset>
+#include <algorithm>
 using namespace std;
 
 #endif // !__STDAFX_H__

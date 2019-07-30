@@ -2,6 +2,7 @@
 #include "leetcode.h"
 #include "BasicAlgorithms.h"
 #include <Windows.h>
+
 using namespace std;
 using namespace Solution;
 namespace Solution {
@@ -32,47 +33,60 @@ namespace Solution {
     }
 }
 
-class Solution1 {
-public:
-    string longestPalindrome(string s) {
-        if (s.size() <= 1)
-            return s;
-        string manacherStr = Manacher_PreProcess(s);
-        std::vector<int> r(manacherStr.size(), 1);
-        int max = 1, pos = 1, posMax = 1;
-        for (int i = 2; i < manacherStr.size(); ++i)
-        {
-            if (i < max)
+namespace Solution120
+{
+    using namespace std;
+    class Solution {
+    public:
+        int minimumTotal(vector<vector<int>>& triangle) {
+            if (triangle.empty())
+                return 0;
+            for (int i = 1; i < triangle.size(); ++i)
             {
-                r[i] = min(r[2 * pos - i], max - i);
+                for (int j = 0; j < triangle[i].size(); ++j)
+                {
+                    if (j - 1 < 0)
+                        triangle[i][j] += triangle[i - 1][j];
+                    else
+                        triangle[i][j] = min(1, 2);
+                }
             }
-            while (manacherStr[i - r[i]] == manacherStr[i + r[i]])
-                ++r[i];
-            if (r[i] > r[posMax])
-                posMax = i;
+            return __GetMin(triangle[triangle.size() - 1]);
         }
-        int originPos = (posMax - r[posMax] + 1) / 2;
-        int originLen = r[posMax] - 1;
-        return s.substr(originPos, originLen);
-    }
-    string Manacher_PreProcess(const string& s)
-    {
-        string ret = "$#";
-        for (auto c : s)
+    private:
+        int __GetMin(vector<int>& vec)
         {
-            ret += c;
-            ret += '#';
+            int nMin = vec[0];
+            for (auto i : vec)
+                nMin = std::min(nMin, i);
+            return nMin;
         }
-        return ret;
+    };
+    void main()
+    {
+
     }
-};
+}
+
+void print()
+{
+
+}
+
+template<typename T, typename... Types>
+void print(const T& firstArg, const Types&... args)
+{
+    cout << firstArg << endl;
+    print(args...);
+}
 
 int main()
 {
-    std::vector<int> vec1 = { 1,3,5,6 };
+    print(7.5, "hello", bitset<16>(377), 42);
+    /*std::vector<int> vec1 = { -1,0,1,2,-1,-4 };
     std::string str = "ccc";
     Solution1 s;
-    std::cout << s.longestPalindrome(str) << std::endl;
+	auto res = s.threeSum(vec1);*/
     system("Pause");
 }
 //
