@@ -27,6 +27,9 @@
     <ClInclude Include="inc\stdafx.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="Singleton.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\707_Design_Linked_List.cpp">

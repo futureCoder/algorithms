@@ -13,6 +13,8 @@
 *.ipch
 *.pch
 *.suo
+*.VC.opendb
+*.opendb
 leetCode/test.cpp
 leetcode/test*.*
 test.cpp

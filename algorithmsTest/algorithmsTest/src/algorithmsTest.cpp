@@ -2,79 +2,324 @@
 #include "leetcode.h"
 #include "BasicAlgorithms.h"
 #include <Windows.h>
+#include <algorithm>
+
+#include "../Singleton.h"
+
 using namespace std;
-using namespace Solution;
+
 namespace Solution {
     int main()
     {
-        MyLinkedList* obj = new MyLinkedList();
-        obj->addAtHead(38);
-        obj->addAtHead(45);
-        obj->deleteAtIndex(2);
-        obj->addAtIndex(1, 24);
-        obj->deleteAtIndex(1);
-        obj->deleteAtIndex(1);
-        obj->deleteAtIndex(0);
-        obj->addAtHead(1);
-        obj->addAtHead(2);
-        obj->addAtIndex(1, 3);
-        obj->deleteAtIndex(1);
-        obj->deleteAtIndex(1);
-        obj->deleteAtIndex(0);
-        obj->addAtHead(1);
-        obj->addAtHead(2);
-        obj->addAtIndex(1, 3);
-        obj->deleteAtIndex(1);
-        obj->deleteAtIndex(1);
-        obj->deleteAtIndex(0);
-        getchar();
+        //MyLinkedList* obj = new MyLinkedList();
+        //obj->addAtHead(38);
+        //obj->addAtHead(45);
+        //obj->deleteAtIndex(2);
+        //obj->addAtIndex(1, 24);
+        //obj->deleteAtIndex(1);
+        //obj->deleteAtIndex(1);
+        //obj->deleteAtIndex(0);
+        //obj->addAtHead(1);
+        //obj->addAtHead(2);
+        //obj->addAtIndex(1, 3);
+        //obj->deleteAtIndex(1);
+        //obj->deleteAtIndex(1);
+        //obj->deleteAtIndex(0);
+        //obj->addAtHead(1);
+        //obj->addAtHead(2);
+        //obj->addAtIndex(1, 3);
+        //obj->deleteAtIndex(1);
+        //obj->deleteAtIndex(1);
+        //obj->deleteAtIndex(0);
+        //getchar();
+        return 0;
+    }
+    //class Solution1 {
+    //public:
+    //    vector<string> alphabeta = { "", "", "abc", "def",
+    //        "ghi", "jkl", "mno",
+    //        "pqrs", "tuv", "wxyz"
+    //    };
+    //    vector<string> letterCombinations(string digits) {
+    //        vector<string> ret;
+    //        if (digits.empty())
+    //            return ret;
+    //        return letterCombinations_(digits);
+    //    }
+
+    //    vector<string> letterCombinations_(string digits)
+    //    {
+    //        if (digits.size() == 1)
+    //        {
+    //            vector<string> ret;
+    //            int num = stoi(digits);
+    //            for (int i = 0; i < alphabeta[num].size(); ++i)
+    //            {
+    //                ret.push_back(to_string(alphabeta[num][i]));
+    //            }
+    //            return ret;
+    //        }
+    //        vector<string> res = letterCombinations_(digits.substr(1));
+    //        vector<string> ret;
+    //        for (auto str : res)
+    //        {
+    //            for (auto ch : alphabeta[pos][digits[0] - '0'])
+    //            {
+    //                ret.push_back(ch + str);
+    //            }
+    //        }
+    //        return ret;
+    //    }
+    //};
+}
+
+typedef union _addrlong
+{
+    long nAddr;
+    char strAddr[sizeof(long)];
+}_addrlong;
+
+namespace CommonFunc
+{
+
+    // INSERT_ELEMENTS (collection, first, last)
+    // - fill values from first to last into the collection
+    // - NOTE: NO half-open range
+    template <typename T>
+    inline void INSERT_ELEMENTS(T& coll, int first, int last)
+    {
+        for (int i = first; i <= last; ++i) {
+            coll.insert(coll.end(), i);
+        }
+    }
+
+    // PRINT_ELEMENTS()
+    // - prints optional string optstr followed by
+    // - all elements of the collection coll
+    // - in one line, separated by spaces
+    template <typename T>
+    inline void PRINT_ELEMENTS(const T& coll,
+        const std::string& optstr = "")
+    {
+        std::cout << optstr;
+        for (const auto& elem : coll) {
+            std::cout << elem << " ";
+        }
+        std::cout << std::endl;
+    }
+
+
+}
+
+namespace TestVector
+{
+    using namespace CommonFunc;
+    int main()
+    {
+        vector<int> coll;
+        INSERT_ELEMENTS(coll, 2, 6);
+        INSERT_ELEMENTS(coll, 4, 9);
+        INSERT_ELEMENTS(coll, 1, 7);
+        PRINT_ELEMENTS(coll, "coll:\t\t\t");
+        // remove all elements with value 5
+        vector<int>::iterator pos;
+        pos = remove(coll.begin(), coll.end(), // range
+            100); // value to remove
+        PRINT_ELEMENTS(coll, "size not changed:\t");
+        while (pos != coll.end())
+        {
+            *pos++ = 0;
+        }
+        PRINT_ELEMENTS(coll, "size not changed:\t");
+        // erase the ¡®¡®removed¡¯¡¯ elements in the container
+        coll.erase(pos, coll.end());
+        PRINT_ELEMENTS(coll, "size changed:\t\t");
+        // remove all elements less than 4
+        coll.erase(remove_if(coll.begin(), coll.end(), // range
+            [](int elem) { // remove criterion
+            return elem < 4;
+        }),
+            coll.end());
+        PRINT_ELEMENTS(coll, "<4 removed:\t\t");
         return 0;
     }
 }
 
-class Solution1 {
+void print() {
+    cout << "empty" << endl;
+}
+//Õ¹¿ªº¯Êý
+template<class T, class... Args>
+void print(T head, Args... rest) {
+    cout << "parameter = " << head << endl;
+    print(rest...);
+}
+
+std::list<int> GetList()
+{
+    std::list<int> list;
+    list.push_back(1);
+    list.push_back(2);
+    list.push_back(3);
+    return list;
+}
+
+class SinTest : public Singleton<SinTest>
+{
 public:
-    string longestPalindrome(string s) {
-        if (s.size() <= 1)
-            return s;
-        string manacherStr = Manacher_PreProcess(s);
-        std::vector<int> r(manacherStr.size(), 1);
-        int max = 1, pos = 1, posMax = 1;
-        for (int i = 2; i < manacherStr.size(); ++i)
-        {
-            if (i < max)
-            {
-                r[i] = min(r[2 * pos - i], max - i);
-            }
-            while (manacherStr[i - r[i]] == manacherStr[i + r[i]])
-                ++r[i];
-            if (r[i] > r[posMax])
-                posMax = i;
-        }
-        int originPos = (posMax - r[posMax] + 1) / 2;
-        int originLen = r[posMax] - 1;
-        return s.substr(originPos, originLen);
-    }
-    string Manacher_PreProcess(const string& s)
+    void Show()
     {
-        string ret = "$#";
-        for (auto c : s)
-        {
-            ret += c;
-            ret += '#';
-        }
-        return ret;
+        print(1, 1, 2, 2, 3, 4, 5);
     }
+protected:
+private:
+    SinTest();
+    ~SinTest();
+    friend class Singleton<SinTest>;
 };
+
+//int main() {
+//    
+//    print(1, 2, 3, 4);
+//    /*std::list<int> l = GetList();
+//    for (std::list<int>::iterator iter = l.begin(); iter != l.end(); ++iter)
+//    {
+//        std::cout << *iter << std::endl;
+//    }*/
+//    return 0;
+//}
+namespace TestCast
+{
+    class A
+    {
+    public:
+        A() {}
+        virtual ~A() {}
+        int i;
+    };
+
+    class B :public A
+    {
+    public:
+        B() {}
+        virtual ~B() {}
+        int j;
+    };
+    class C :public B
+    {
+    public:
+        C() {}
+        virtual ~C() {}
+        int k;
+    };
+    class D :public C
+    {
+    public:
+        D() {}
+        virtual ~D() {}
+        int l;
+    };
+    class E :public D
+    {
+    public:
+        E() {}
+        virtual ~E() {}
+        int m;
+    };
+    int main()
+    {
+        E* pE = new E;
+        A* pA = new E;
+
+
+        int st = GetTickCount();
+        for (int i = 0; i != 100000000; i++)
+        {
+            pE = (E*)pA;
+        }
+        int en = GetTickCount();
+
+        int st1 = GetTickCount();
+        for (int i = 0; i != 100000000; i++)
+        {
+            pE = static_cast<E*>(pA);
+        }
+        int en1 = GetTickCount();
+
+        int st2 = GetTickCount();
+        for (int i = 0; i != 100000000; i++)
+        {
+            pE = dynamic_cast<E*>(pA);
+        }
+        int en2 = GetTickCount();
+
+        cout << "():" << (en - st) << endl;
+        cout << "static_cast:" << (en1 - st1) << endl;
+        cout << "dynamic_cast:" << (en2 - en1) << endl;
+        return 0;
+    }
+}
+
+
+namespace LeetCode132
+{
+    int minCut(string s) {
+        const int nSize = s.size();
+        int* f = new int[nSize];
+        bool** isPalindrome = new bool*[nSize];
+        for(int i = 0; i < nSize; ++i)
+        {
+            isPalindrome[i] = new bool[nSize];
+        }
+        fill_n(&isPalindrome[0][0], nSize * nSize, false);
+        for (int i = 0; i <= nSize; ++i)
+            f[i] = nSize - i - 1;
+        try
+        {
+            for (int i = nSize - 1; i >= 0;)
+            {
+                for (int j = i; j < nSize; ++j)
+                {
+                    if (s[i] == s[j] && (j - i < 2 || s[i + 1] == s[j - 1]))
+                    {
+                        isPalindrome[i][j] = true;
+                        f[i] = min(f[i], f[j + 1] + 1);
+                    }
+                }
+                --i;
+            }
+        }
+        catch(exception e)
+        {
+            std::cout << e.what() << endl;
+        }
+        return f[0];
+    }
+}
 
 int main()
 {
-    std::vector<int> vec1 = { 1,3,5,6 };
-    std::string str = "ccc";
-    Solution1 s;
-    std::cout << s.longestPalindrome(str) << std::endl;
-    system("Pause");
+    //TestVector::main();
+    LeetCode132::minCut("amanaplanacanalpanama");
+    return 0;
 }
+
+//int main()
+//{
+//    _addrlong addr;
+//    addr.nAddr = 0x12345678;
+//    for (int i = 0; i < sizeof(long); ++i)
+//    {
+//        cout << hex << addr.strAddr[i] << endl;
+//    }
+//    
+//    //std::vector<int> vec1 = {-1, 0, 1, 2, -1, -4};
+//    //std::string str = "23";
+//    //Solution1 s;
+//    //auto ans = s.letterCombinations(str);
+//    //system("Pause");
+//}
+
 //
 //void makeNext(string needle, vector<int> &next)
 //{
