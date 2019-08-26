@@ -71,172 +71,178 @@ namespace Solution {
     //};
 }
 
-namespace Solution120
-{
-    using namespace std;
-    class Solution {
-    public:
-        int minimumTotal(vector<vector<int>>& triangle) {
-            if (triangle.empty())
-                return 0;
-            for (int i = 1; i < triangle.size(); ++i)
-            {
-                for (int j = 0; j < triangle[i].size(); ++j)
-                {
-                    if (j - 1 < 0)
-                        triangle[i][j] += triangle[i - 1][j];
-                    else
-                        triangle[i][j] = min(1, 2);
-                }
-            }
-            return __GetMin(triangle[triangle.size() - 1]);
-        }
-    private:
-        int __GetMin(vector<int>& vec)
-        {
-            int nMin = vec[0];
-            for (auto i : vec)
-                nMin = std::min(nMin, i);
-            return nMin;
-        }
-    };
-    void main()
-    {
-
-    }
-}
-
-void print()
-{
-
-}
-
-template<typename T, typename... Types>
-void print(const T& firstArg, const Types&... args)
-{
-    cout << firstArg << endl;
-    print(args...);
-}
-
-int main()
-{
-    print(7.5, "hello", bitset<16>(377), 42);
-    /*std::vector<int> vec1 = { -1,0,1,2,-1,-4 };
-    std::string str = "ccc";
-    Solution1 s;
-	auto res = s.threeSum(vec1);*/
-    system("Pause");
-typedef union _addrlong
-{
-    long nAddr;
-    char strAddr[sizeof(long)];
-}_addrlong;
-
-namespace CommonFunc
-{
-
-    // INSERT_ELEMENTS (collection, first, last)
-    // - fill values from first to last into the collection
-    // - NOTE: NO half-open range
-    template <typename T>
-    inline void INSERT_ELEMENTS(T& coll, int first, int last)
-    {
-        for (int i = first; i <= last; ++i) {
-            coll.insert(coll.end(), i);
-        }
-    }
-
-    // PRINT_ELEMENTS()
-    // - prints optional string optstr followed by
-    // - all elements of the collection coll
-    // - in one line, separated by spaces
-    template <typename T>
-    inline void PRINT_ELEMENTS(const T& coll,
-        const std::string& optstr = "")
-    {
-        std::cout << optstr;
-        for (const auto& elem : coll) {
-            std::cout << elem << " ";
-        }
-        std::cout << std::endl;
-    }
-
-
-}
-
-namespace TestVector
-{
-    using namespace CommonFunc;
-    int main()
-    {
-        vector<int> coll;
-        INSERT_ELEMENTS(coll, 2, 6);
-        INSERT_ELEMENTS(coll, 4, 9);
-        INSERT_ELEMENTS(coll, 1, 7);
-        PRINT_ELEMENTS(coll, "coll:\t\t\t");
-        // remove all elements with value 5
-        vector<int>::iterator pos;
-        pos = remove(coll.begin(), coll.end(), // range
-            100); // value to remove
-        PRINT_ELEMENTS(coll, "size not changed:\t");
-        while (pos != coll.end())
-        {
-            *pos++ = 0;
-        }
-        PRINT_ELEMENTS(coll, "size not changed:\t");
-        // erase the ‘‘removed’’ elements in the container
-        coll.erase(pos, coll.end());
-        PRINT_ELEMENTS(coll, "size changed:\t\t");
-        // remove all elements less than 4
-        coll.erase(remove_if(coll.begin(), coll.end(), // range
-            [](int elem) { // remove criterion
-            return elem < 4;
-        }),
-            coll.end());
-        PRINT_ELEMENTS(coll, "<4 removed:\t\t");
-        return 0;
-    }
-}
-
-void print() {
-    cout << "empty" << endl;
-}
-//展开函数
-template<class T, class... Args>
-void print(T head, Args... rest) {
-    cout << "parameter = " << head << endl;
-    print(rest...);
-}
-
-std::list<int> GetList()
-{
-    std::list<int> list;
-    list.push_back(1);
-    list.push_back(2);
-    list.push_back(3);
-    return list;
-}
-
-//int main() {
-//    
-//    print(1, 2, 3, 4);
-//    /*std::list<int> l = GetList();
-//    for (std::list<int>::iterator iter = l.begin(); iter != l.end(); ++iter)
+//namespace Solution120
+//{
+//    using namespace std;
+//    class Solution {
+//    public:
+//        int minimumTotal(vector<vector<int>>& triangle) {
+//            if (triangle.empty())
+//                return 0;
+//            for (int i = 1; i < triangle.size(); ++i)
+//            {
+//                for (int j = 0; j < triangle[i].size(); ++j)
+//                {
+//                    if (j - 1 < 0)
+//                        triangle[i][j] += triangle[i - 1][j];
+//                    else
+//                        triangle[i][j] = min(1, 2);
+//                }
+//            }
+//            return __GetMin(triangle[triangle.size() - 1]);
+//        }
+//    private:
+//        int __GetMin(vector<int>& vec)
+//        {
+//            int nMin = vec[0];
+//            for (auto i : vec)
+//                nMin = std::min(nMin, i);
+//            return nMin;
+//        }
+//    };
+//    void main()
 //    {
-//        std::cout << *iter << std::endl;
-//    }*/
-//    return 0;
+//
+//    }
 //}
-
+//
+//void print()
+//{
+//
+//}
+//
+//template<typename T, typename... Types>
+//void print(const T& firstArg, const Types&... args)
+//{
+//    cout << firstArg << endl;
+//    print(args...);
+//}
+//
+//int main()
+//{
+//    print(7.5, "hello", bitset<16>(377), 42);
+//    /*std::vector<int> vec1 = { -1,0,1,2,-1,-4 };
+//    std::string str = "ccc";
+//    Solution1 s;
+//	auto res = s.threeSum(vec1);*/
+//    system("Pause");
+//typedef union _addrlong
+//{
+//    long nAddr;
+//    char strAddr[sizeof(long)];
+//}_addrlong;
+//
+//namespace CommonFunc
+//{
+//
+//    // INSERT_ELEMENTS (collection, first, last)
+//    // - fill values from first to last into the collection
+//    // - NOTE: NO half-open range
+//    template <typename T>
+//    inline void INSERT_ELEMENTS(T& coll, int first, int last)
+//    {
+//        for (int i = first; i <= last; ++i) {
+//            coll.insert(coll.end(), i);
+//        }
+//    }
+//
+//    // PRINT_ELEMENTS()
+//    // - prints optional string optstr followed by
+//    // - all elements of the collection coll
+//    // - in one line, separated by spaces
+//    template <typename T>
+//    inline void PRINT_ELEMENTS(const T& coll,
+//        const std::string& optstr = "")
+//    {
+//        std::cout << optstr;
+//        for (const auto& elem : coll) {
+//            std::cout << elem << " ";
+//        }
+//        std::cout << std::endl;
+//    }
+//
+//
+//}
+//
+//namespace TestVector
+//{
+//    using namespace CommonFunc;
+//    int main()
+//    {
+//        vector<int> coll;
+//        INSERT_ELEMENTS(coll, 2, 6);
+//        INSERT_ELEMENTS(coll, 4, 9);
+//        INSERT_ELEMENTS(coll, 1, 7);
+//        PRINT_ELEMENTS(coll, "coll:\t\t\t");
+//        // remove all elements with value 5
+//        vector<int>::iterator pos;
+//        pos = remove(coll.begin(), coll.end(), // range
+//            100); // value to remove
+//        PRINT_ELEMENTS(coll, "size not changed:\t");
+//        while (pos != coll.end())
+//        {
+//            *pos++ = 0;
+//        }
+//        PRINT_ELEMENTS(coll, "size not changed:\t");
+//        // erase the ‘‘removed’’ elements in the container
+//        coll.erase(pos, coll.end());
+//        PRINT_ELEMENTS(coll, "size changed:\t\t");
+//        // remove all elements less than 4
+//        coll.erase(remove_if(coll.begin(), coll.end(), // range
+//            [](int elem) { // remove criterion
+//            return elem < 4;
+//        }),
+//            coll.end());
+//        PRINT_ELEMENTS(coll, "<4 removed:\t\t");
+//        return 0;
+//    }
+//}
+//
+//void print() {
+//    cout << "empty" << endl;
+//}
+////展开函数
+//template<class T, class... Args>
+//void print(T head, Args... rest) {
+//    cout << "parameter = " << head << endl;
+//    print(rest...);
+//}
+//
+//std::list<int> GetList()
+//{
+//    std::list<int> list;
+//    list.push_back(1);
+//    list.push_back(2);
+//    list.push_back(3);
+//    return list;
+//}
+//
+////int main() {
+////    
+////    print(1, 2, 3, 4);
+////    /*std::list<int> l = GetList();
+////    for (std::list<int>::iterator iter = l.begin(); iter != l.end(); ++iter)
+////    {
+////        std::cout << *iter << std::endl;
+////    }*/
+////    return 0;
+////}
+//
 
 int main()
 {
-	LeetCode0000::Solution s;
-	string str;
-	int vList[6] = { 1,2,3,4,5,6 };
-	s.Sererialize(str, 1, vList);
-	cout << str << endl;
-	//LeetCode347::main();
+	int a = 2, b = 3;
+	bool bCF = false;
+	int nRet = 0;
+	for (int i = 0; i < sizeof(int) * 8; ++i)
+	{
+		int nMask = 1 << i;
+		int nCurBit = (a ^ b) & nMask;
+		if (bCF)
+			nCurBit ^= nMask;
+		bCF = (a & b & nMask) || (((a ^ b) & nMask) && bCF);
+		nRet |= nCurBit;
+	}
 }
 
 //int main()
