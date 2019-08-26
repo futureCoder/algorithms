@@ -21,13 +21,22 @@
     <ClInclude Include="inc\BasicAlgorithms.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="inc\leetcode.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
     <ClInclude Include="inc\stdafx.h">
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="Singleton.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="inc\LeetCodeDef.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="inc\Common.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="inc\HeadSort.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="inc\LeetCode.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

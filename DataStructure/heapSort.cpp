@@ -2,11 +2,11 @@
 #include <vector>
 #include <algorithm>
 
-void heapAdjustArray(std::vector<int> &vec, int i, int len) {
-	for(int nChild = 2 * i + 1, tmp = vec[i]; nChild < len; i = nChild) {
-		if(nChild + 1 < len && vec[nChild + 1] > vec[nChild]) ++nChild;
-		if(vec[i] < vec[nChild]) 
-			std::swap(vec[i], vec[nChild]);
+void heapAdjustArray(std::vector<int> &vec, int nParent, int nLimit) {
+	for(int nChild = 2 * nParent + 1; nChild < nLimit; nParent = nChild) {
+		if(nChild + 1 < nLimit && vec[nChild + 1] > vec[nChild]) ++nChild;
+		if(vec[nParent] < vec[nChild]) 
+			std::swap(vec[nParent], vec[nChild]);
 		else 
 			break;
 	}

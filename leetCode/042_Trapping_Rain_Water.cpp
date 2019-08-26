@@ -9,13 +9,14 @@ public:
         for(int i = len-1; i > 0; --i)
         {
             right[i] = rightmax;
-            if(height[i] > rightmax) rightmax = height[i];
+            rightmax = std::max(rightmax, height[i]);
         }
         for(int i = 0; i < len; ++i)
         {
             int max = min(leftmax,right[i]);
-            if(height[i] > leftmax) leftmax = height[i];
-            if(max <= height[i]) continue;
+            leftmax = std::max(leftmax, height[i]);
+            if(max <= height[i]) 
+                continue;
             ret += (max - height[i]);
         }
         return ret;

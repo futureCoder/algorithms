@@ -147,7 +147,10 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="inc\BasicAlgorithms.h" />
-    <ClInclude Include="inc\leetcode.h" />
+    <ClInclude Include="inc\Common.h" />
+    <ClInclude Include="inc\HeadSort.h" />
+    <ClInclude Include="inc\LeetCode.h" />
+    <ClInclude Include="inc\LeetCodeDef.h" />
     <ClInclude Include="inc\stdafx.h" />
     <ClInclude Include="Singleton.h" />
   </ItemGroup>
