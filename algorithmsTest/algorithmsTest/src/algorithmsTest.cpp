@@ -6,6 +6,126 @@
 
 using namespace std;
 
+namespace Solution {
+    int main()
+    {
+        //MyLinkedList* obj = new MyLinkedList();
+        //obj->addAtHead(38);
+        //obj->addAtHead(45);
+        //obj->deleteAtIndex(2);
+        //obj->addAtIndex(1, 24);
+        //obj->deleteAtIndex(1);
+        //obj->deleteAtIndex(1);
+        //obj->deleteAtIndex(0);
+        //obj->addAtHead(1);
+        //obj->addAtHead(2);
+        //obj->addAtIndex(1, 3);
+        //obj->deleteAtIndex(1);
+        //obj->deleteAtIndex(1);
+        //obj->deleteAtIndex(0);
+        //obj->addAtHead(1);
+        //obj->addAtHead(2);
+        //obj->addAtIndex(1, 3);
+        //obj->deleteAtIndex(1);
+        //obj->deleteAtIndex(1);
+        //obj->deleteAtIndex(0);
+        //getchar();
+        return 0;
+    }
+    //class Solution1 {
+    //public:
+    //    vector<string> alphabeta = { "", "", "abc", "def",
+    //        "ghi", "jkl", "mno",
+    //        "pqrs", "tuv", "wxyz"
+    //    };
+    //    vector<string> letterCombinations(string digits) {
+    //        vector<string> ret;
+    //        if (digits.empty())
+    //            return ret;
+    //        return letterCombinations_(digits);
+    //    }
+
+    //    vector<string> letterCombinations_(string digits)
+    //    {
+    //        if (digits.size() == 1)
+    //        {
+    //            vector<string> ret;
+    //            int num = stoi(digits);
+    //            for (int i = 0; i < alphabeta[num].size(); ++i)
+    //            {
+    //                ret.push_back(to_string(alphabeta[num][i]));
+    //            }
+    //            return ret;
+    //        }
+    //        vector<string> res = letterCombinations_(digits.substr(1));
+    //        vector<string> ret;
+    //        for (auto str : res)
+    //        {
+    //            for (auto ch : alphabeta[pos][digits[0] - '0'])
+    //            {
+    //                ret.push_back(ch + str);
+    //            }
+    //        }
+    //        return ret;
+    //    }
+    //};
+}
+
+namespace Solution120
+{
+    using namespace std;
+    class Solution {
+    public:
+        int minimumTotal(vector<vector<int>>& triangle) {
+            if (triangle.empty())
+                return 0;
+            for (int i = 1; i < triangle.size(); ++i)
+            {
+                for (int j = 0; j < triangle[i].size(); ++j)
+                {
+                    if (j - 1 < 0)
+                        triangle[i][j] += triangle[i - 1][j];
+                    else
+                        triangle[i][j] = min(1, 2);
+                }
+            }
+            return __GetMin(triangle[triangle.size() - 1]);
+        }
+    private:
+        int __GetMin(vector<int>& vec)
+        {
+            int nMin = vec[0];
+            for (auto i : vec)
+                nMin = std::min(nMin, i);
+            return nMin;
+        }
+    };
+    void main()
+    {
+
+    }
+}
+
+void print()
+{
+
+}
+
+template<typename T, typename... Types>
+void print(const T& firstArg, const Types&... args)
+{
+    cout << firstArg << endl;
+    print(args...);
+}
+
+int main()
+{
+    print(7.5, "hello", bitset<16>(377), 42);
+    /*std::vector<int> vec1 = { -1,0,1,2,-1,-4 };
+    std::string str = "ccc";
+    Solution1 s;
+	auto res = s.threeSum(vec1);*/
+    system("Pause");
 typedef union _addrlong
 {
     long nAddr;
