@@ -119,4 +119,54 @@ namespace LeetCode347
 	}
 }
 
+namespace LeetCode378
+{
+	class Solution {
+	public:
+		int kthSmallest(vector<vector<int>>& matrix, int k) {
+			int nSize = matrix.size();
+			int nLoc = __GetRange(k, nSize);
+			priority_queue<int> pq;
+			bool bRightDown = nLoc >= nSize;
+			int x = bRightDown ? nLoc - nSize + 1 : 0;
+			while (x >= 0 && x < nSize)
+			{
+				int y = nLoc - x;
+				try
+				{
+					pq.push(matrix[x][y]);
+				}
+				catch (const std::exception& e)
+				{
+					std::cout << e.what() << '\n';
+				}
+				x += 1;
+				//x += bRightDown ? 1 : -1;
+				if (pq.size() > k)
+					pq.pop();
+			}
+			return pq.empty() ? -1 : pq.top();
+		}
+	private:
+		int __GetRange(int& k, int n)
+		{
+			for (int i = 1; i < 2 * n; ++i)
+			{
+				int nCount = i <= n ? i : 2 * n - i;
+				if (k <= nCount)
+					return i - 1;
+				k -= nCount;
+			}
+			return -1;
+		}
+	};
+	void main()
+	{
+		Solution s;
+		vector<vector<int>> vec{ { 1,2 },{ 1,3} };
+		s.kthSmallest(vec, 2);
+	}
+}
+
+
 #endif // !__LEETCODE_H__

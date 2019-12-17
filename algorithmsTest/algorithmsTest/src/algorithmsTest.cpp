@@ -229,37 +229,109 @@ namespace Solution {
 ////}
 //
 
-int main()
+template<typename T>
+T MyMax(T lhs, T rhs)
 {
-	int a = 2, b = 3;
-	bool bCF = false;
-	int nRet = 0;
-	for (int i = 0; i < sizeof(int) * 8; ++i)
-	{
-		int nMask = 1 << i;
-		int nCurBit = (a ^ b) & nMask;
-		if (bCF)
-			nCurBit ^= nMask;
-		bCF = (a & b & nMask) || (((a ^ b) & nMask) && bCF);
-		nRet |= nCurBit;
-	}
+	return max(lhs, rhs);
+}
+template<typename T = int, typename... args>
+T MyMax(T lhs, args... rhs)
+{
+	T _max = MyMax(rhs...);
+	return max(lhs, _max);
 }
 
-//int main()
-//{
-//    _addrlong addr;
-//    addr.nAddr = 0x12345678;
-//    for (int i = 0; i < sizeof(long); ++i)
-//    {
-//        cout << hex << addr.strAddr[i] << endl;
-//    }
-//    
-//    //std::vector<int> vec1 = {-1, 0, 1, 2, -1, -4};
-//    //std::string str = "23";
-//    //Solution1 s;
-//    //auto ans = s.letterCombinations(str);
-//    //system("Pause");
-//}
+class GridA
+{
+public:
+
+	GridA(){}
+	~GridA(){}
+private:
+	bool m_bWalk{};
+	int m_nHeight{0};
+	bool m_bValid{};
+};
+
+class GridB
+{
+public:
+
+	GridB()
+	{
+	}
+	virtual ~GridB();
+private:
+	int m_nAttrs{ 0 };
+	int m_nHeight{ 0 };
+};
+
+void(*ppp[5])(int);
+
+void Func(int a)
+{
+	
+}
+
+class Base
+{
+public:
+	virtual void output() = 0
+	{
+		std::cout << "Base!" << std::endl;
+	}
+};
+class Derived : public Base
+{
+public:
+	virtual void output()
+	{
+		Base::output();
+		std::cout << "Derived!" << std::endl;
+	}
+};
+
+#include <iostream>
+#pragma pack(2)
+struct S1
+{
+	S1() { b = 0x02; c = 0x04; d = 0x08; e = 0x10; }
+	float b;
+	short c;
+	int d;
+	char e;
+};
+#pragma pack(push)
+#pragma pack(16)
+struct S2
+{
+	S2() { a = 0x01; f = 0x20; g = 0x30; h = 0xF0F0F0F0F0F0F0F0; }
+	double a;
+	S1 s1;
+	long long int f;
+	int g;
+	long long int h;
+};
+#pragma pack(pop)
+
+template<typename T>
+T fun(T x, T y)
+{
+	return x*x + y*y;
+}
+
+int main()
+{
+	S2 x;
+	S2 *px = &x;
+	std::cout << sizeof(S1) << std::endl;
+	std::cout << sizeof(x) << std::endl;
+
+	//std::cout << fun(2.3, 8) << std::endl;
+	//std::cout << fun<int>(2, 8.3) << std::endl;
+
+	return 0;
+}
 
 //
 //void makeNext(string needle, vector<int> &next)
