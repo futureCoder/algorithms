@@ -30,6 +30,9 @@
     <ClCompile Include="Src\ThreadPool.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="test.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Inc\algorithmsBasic.hpp">
@@ -63,6 +66,15 @@
       <Filter>头文件\Leetcode</Filter>
     </ClInclude>
     <ClInclude Include="Inc\HashMapDef.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="LRUCache.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="myshared_ptr.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="test.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>
