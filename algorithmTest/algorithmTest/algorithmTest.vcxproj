@@ -154,7 +154,7 @@
     <ClCompile Include="Src\algorithmsBasic.cpp" />
     <ClCompile Include="Src\BasicSortAlgorithms.cpp" />
     <ClCompile Include="Src\ThreadPool.cpp" />
-    <ClCompile Include="test.cpp" />
+    <ClCompile Include="code_buffer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Inc\146_LRU_Cache.h" />
@@ -170,7 +170,7 @@
     <ClInclude Include="Inc\ThreadPool.h" />
     <ClInclude Include="LRUCache.h" />
     <ClInclude Include="myshared_ptr.h" />
-    <ClInclude Include="test.h" />
+    <ClInclude Include="code_buffer.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Src\ListDef.inl" />

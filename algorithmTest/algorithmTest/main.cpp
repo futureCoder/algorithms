@@ -11,5 +11,7 @@
 #include "code_buffer.h"
 
 int main() {
-    
+    LoaderFStream ls;
+    ls.load("card_define.txt");
+    ls.get_meta_list()
 }

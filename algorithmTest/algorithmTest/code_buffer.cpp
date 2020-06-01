@@ -1,5 +1,6 @@
-#include "test.h"
+#include "code_buffer.h"
 #include <iostream>
+#include <fstream>
 
 void IntParser::print_data() {
     std::cout << _data << std::endl;
@@ -98,9 +99,9 @@ bool StrArrayParser::data_parser(const std::string& str) {
         //LOG : FATAL("int[] data size incorrect");
         return false;
     }
-    std::vector<float> res;
+    std::vector<std::string> res;
     for (const auto& item : array_content) {
-        res.emplace_back(std::stof(item)); //TODO how to templatize it ?
+        res.emplace_back(item); //TODO how to templatize it ?
     }
     _data.swap(res);
     return true;
@@ -112,7 +113,7 @@ std::vector<std::string> Utils::split_string(const std::string& str, const std::
     std::size_t end_index = str.find_first_of(separator);
     while (end_index != std::string::npos) {
         res.emplace_back(str.substr(start_index, end_index - start_index));
-        start_index = end_index + sizeof(separator);
+        start_index = end_index + separator.size();
         end_index = str.find_first_of(separator, start_index);
     }
 
@@ -121,6 +122,136 @@ std::vector<std::string> Utils::split_string(const std::string& str, const std::
     }
 
     return res;
+}
+
+bool LoaderFStream::load(const std::string& file_name) {
+    if (file_name.empty()) {
+        return false;
+    }
+
+    clear();
+    std::ifstream in_file;
+    in_file.open(file_name, std::ifstream::in);
+    if (!in_file.good()) {
+        //log
+        return false;
+    }
+    {//parse label_ori
+        std::string label_ori;
+        std::getline(in_file, label_ori, '\n');
+        label_ori = format_string(label_ori);
+        //label_ori += '\t';
+
+        std::vector<std::string> label_list = Utils::split_string(label_ori, "\t");
+        for (const auto& str : label_list) {
+            LabelInfo info;
+            info.name = str;
+            _label.emplace_back(info);
+        }
+    }
+    {//parse type
+        std::string type_ori;
+        std::getline(in_file, type_ori, '\n');
+        type_ori = format_string(type_ori);
+        //label_ori += '\t';
+        std::vector<std::string> type_list = Utils::split_string(type_ori, "\t");
+        if (_label.size() != type_list.size()) {
+            //log
+            return false;
+        }
+        for (size_t i = 0; i < type_list.size(); ++i) {
+            swap(_label[i].info, type_list[i]);
+        }
+    }
+
+    {//parse real content
+        std::string tmp_str;
+        while (std::getline(in_file, tmp_str, '\n')) {
+            tmp_str = format_string(tmp_str);
+            //tmp_str += '\t';
+            StringVector value_list = Utils::split_string(tmp_str, "\t");
+            if (value_list.size() != _label.size()) {
+                //TODO something wrong, log it and process
+                //do not continue,
+            }
+            _content.emplace_back(value_list);
+        }
+    }
+
+    return true;
+}
+
+std::string LoaderFStream::format_string(const std::string& str) {
+    size_t pos = str.find('\r', 0);
+    if (-1 == pos) {
+        return str;
+    }
+    return str.substr(0, pos);
+}
+
+
+bool FileInterface::ExecuteSql(const char* sSql, Table* pTable)
+{
+    if (!sSql || !pTable)
+    {
+        return false;
+    }
+
+    Clear();
+    if (!LoaderFStream::load(sSql))
+    {
+        return false;
+    }
+
+    LabelVector labels;
+    if (!LoaderFStream::get_meta_list(labels))
+    {
+        return false;
+    }
+    int DBType = DB_COLUMN_Unkonw;
+    for (size_t i = 0; i < (size_t)labels.size(); ++i)
+    {
+        if (labels[i].info == "int8" ||
+            labels[i].info == "uint8" ||
+            labels[i].info == "int16" ||
+            labels[i].info == "uint16" ||
+            labels[i].info == "int32" ||
+            labels[i].info == "uint32"
+            )
+        {
+            DBType = DB_COLUMN_INT;
+        }
+        else if (labels[i].info == "int64" ||
+            labels[i].info == "uint64")
+        {
+            DBType = DB_COLUMN_INT64;
+        }
+        else if (labels[i].info == "f32")
+        {
+            DBType = DB_COLUMN_FLOAT;
+        }
+        else if (labels[i].info == "f64")
+        {
+            DBType = DB_COLUMN_DOUBLE;
+        }
+        else if (labels[i].info == "char")
+        {
+            DBType = DB_COLUMN_TEXT;
+        }
+        pTable->add_column((char*)labels[i].name.c_str(), i, labels[i].info/*DBType*/);
+    }
+
+
+    StringVector values;
+    int32_t idx = 0;
+    while (get_value_list(idx, values))
+    {
+        FillValues(pTable, values);
+        idx++;
+    }
+
+
+    return true;
 }
 
 //#include <iostream>
