@@ -107,6 +107,182 @@ bool StrArrayParser::data_parser(const std::string& str) {
     return true;
 }
 
+void UserData::print_data() {
+    std::cout << "(name) " << _name << "(age) " << _age << "(K/D/A)" << _kill << "/" << _dead << "/" << _assist << std::endl;
+}
+
+bool UserData::data_parser(const std::string& str) {
+    std::vector<std::string> split_array =
+        Utils::split_string(str, _str_separator);
+    int array_size = split_array.size();
+
+    if (array_size != get_member_cnt()) {
+        //LOG FATAL("user_data size incorrect");
+        return false;
+    }
+    // name
+    _name = split_array[0];
+    // age
+    _age = std::stoi(split_array[1]);
+    // kill
+    _kill = std::stof(split_array[2]);
+    // dead
+    _dead = std::stof(split_array[3]);
+    // assist
+    _assist = std::stof(split_array[4]);
+    return true;
+}
+
+DictParser::DictParser() :
+    _total_col_cnt(0) {
+    //初始化建立映射关系  
+    _type_parser_map["int"] = new(std::nothrow) IntParser();
+    _type_parser_map["float"] = new(std::nothrow) FloatParser();
+    _type_parser_map["string"] = new(std::nothrow) StrParser();
+    _type_parser_map["int_array"] = new(std::nothrow) IntArrayParser();
+    _type_parser_map["float_array"] = new(std::nothrow) FloatArrayParser();
+    _type_parser_map["str_array"] = new(std::nothrow) StrArrayParser();
+    _type_parser_map["user_data"] = new(std::nothrow) UserData();
+}
+
+DictParser::~DictParser() {
+    for (auto& item : _type_parser_map) {
+        delete item.second;
+    }
+}
+
+bool DictParser::read_file_by_line(const std::string& file_name) {
+    std::ifstream data_file;
+    data_file.open(file_name.c_str(), std::ifstream::in);
+    //load failed
+    if (data_file.fail()) {
+        //LOG FATAL("Open file error");
+        return -1;
+    }
+    std::string cur_line_str;
+    int line = 0;
+    //逐行读取数据 
+    while (getline(data_file, cur_line_str)) {
+        if (line == 0) {
+            ++line;
+            continue;
+            //第一行获取每一列的数据类型   
+            ++line;
+            int ret = get_each_col_data_type(cur_line_str);
+            if (ret == -1) {
+                return -1;
+            }
+        } else if (line == 1) {
+            //第二行获取每一列的数据类型   
+            ++line;
+            int ret = get_each_col_data_type(cur_line_str);
+            if (ret == -1) {
+                return -1;
+            }
+        } else {
+            //第二行开始进行解析
+            printf("\n");
+            ++line;
+            printf("line:%d,\n", line - 1);
+            if (cur_line_str.empty()) {
+                //LOG FATAL("line %d of data.conf is empty", line - 1);
+                continue;
+            }
+
+            std::vector<std::string> each_col_data_value =
+                Utils::split_string(cur_line_str, "\t");
+            int cur_line_cnt = each_col_data_value.size();
+            //该行数据数量与第一行的类型数量不匹配  
+            if (cur_line_cnt != _total_col_cnt) {
+                //LOG FATAL("line %d's columns_number incorrect", line - 1);
+                continue;
+            }
+
+            for (int i = 0; i < cur_line_cnt; ++i) {
+                //对每一列数据进行解析
+                std::cout << "col: " << i + 1 << std::endl;
+                std::string cur_col_data_str = each_col_data_value[i];
+                if (cur_col_data_str.empty()) {
+                    //LOG FATAL("line %d,column %d is empty", line - 1, i + 1);
+                    continue;
+                }
+                int res = col_str_data_parser(cur_col_data_str, i, line);
+                printf("\n");
+                if (res == -1) {
+                    continue;
+                }
+            }
+        }
+    }
+    if (line == 0) {
+        //LOG WARNING("data.conf is empty");
+        return -1;
+    }
+    data_file.close();
+    return 0;
+}
+
+bool DictParser::get_each_col_data_type(const std::string& first_line_str) {
+    //根据词表文件的第一行，获取每一列的数据类型     
+    if (first_line_str.empty()) {
+        //LOG WARNING("data.conf is empty");
+        return false;
+    }
+    _column_type = Utils::split_string(first_line_str, "\t");
+    for (const auto& cur_str : _column_type) {
+        auto it = _type_parser_map.find(cur_str);
+        //在映射表中没找到该类型，表明输入的数据类型非法     
+        if (it == _type_parser_map.end()) {
+            //LOG FATAL("line 1,column %d is illegal date type", (int)(i + 1));
+            return false;
+        }
+    }
+    _total_col_cnt = _column_type.size();
+    return true;
+}
+
+bool DictParser::col_str_data_parser(const std::string& col_str, int index, int line) {
+    //对输入的字符串进行解析 
+    const std::string& cur_col_data_type = _column_type[index];
+    auto it = _type_parser_map.find(cur_col_data_type);
+    //找不到对应的映射关系  
+    if (it == _type_parser_map.end()) {
+        //LOG FATAL("line %d,column %d is illegal data type", line - 1, index + 1);
+        return false;
+    }
+    bool ret = false;
+    try {
+         ret = it->second->data_parser(col_str);
+    } catch (std::exception e) {
+        std::cerr << e.what() << std::endl;
+        ret = false;
+    }
+    //解析失败  
+    if (!ret) {
+        //LOG FATAL("line %d,column %d parse error", line - 1, index + 1);
+        return false;
+    }
+    it->second->print_data();
+    return true;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 std::vector<std::string> Utils::split_string(const std::string& str, const std::string& separator) {
     std::vector<std::string> res;
     std::size_t start_index = 0;
@@ -182,7 +358,7 @@ bool LoaderFStream::load(const std::string& file_name) {
 }
 
 std::string LoaderFStream::format_string(const std::string& str) {
-    size_t pos = str.find('\r', 0);
+    const size_t pos = str.find('\r', 0);
     if (-1 == pos) {
         return str;
     }
@@ -190,69 +366,73 @@ std::string LoaderFStream::format_string(const std::string& str) {
 }
 
 
-bool FileInterface::ExecuteSql(const char* sSql, Table* pTable)
-{
-    if (!sSql || !pTable)
-    {
-        return false;
-    }
-
-    Clear();
-    if (!LoaderFStream::load(sSql))
-    {
-        return false;
-    }
-
-    LabelVector labels;
-    if (!LoaderFStream::get_meta_list(labels))
-    {
-        return false;
-    }
-    int DBType = DB_COLUMN_Unkonw;
-    for (size_t i = 0; i < (size_t)labels.size(); ++i)
-    {
-        if (labels[i].info == "int8" ||
-            labels[i].info == "uint8" ||
-            labels[i].info == "int16" ||
-            labels[i].info == "uint16" ||
-            labels[i].info == "int32" ||
-            labels[i].info == "uint32"
-            )
-        {
-            DBType = DB_COLUMN_INT;
-        }
-        else if (labels[i].info == "int64" ||
-            labels[i].info == "uint64")
-        {
-            DBType = DB_COLUMN_INT64;
-        }
-        else if (labels[i].info == "f32")
-        {
-            DBType = DB_COLUMN_FLOAT;
-        }
-        else if (labels[i].info == "f64")
-        {
-            DBType = DB_COLUMN_DOUBLE;
-        }
-        else if (labels[i].info == "char")
-        {
-            DBType = DB_COLUMN_TEXT;
-        }
-        pTable->add_column((char*)labels[i].name.c_str(), i, labels[i].info/*DBType*/);
-    }
-
-
-    StringVector values;
-    int32_t idx = 0;
-    while (get_value_list(idx, values))
-    {
-        FillValues(pTable, values);
-        idx++;
-    }
-
-
-    return true;
-}
+//bool FileInterface::ExecuteSql(const char* sSql, Table* pTable)
+//{
+//    if (!sSql || !pTable)
+//    {
+//        return false;
+//    }
+//
+//    Clear();
+//    if (!LoaderFStream::load(sSql))
+//    {
+//        return false;
+//    }
+//
+//    LabelVector labels;
+//    if (!LoaderFStream::get_meta_list(labels))
+//    {
+//        return false;
+//    }
+//    int DBType = DB_COLUMN_Unkonw;
+//    for (size_t i = 0; i < (size_t)labels.size(); ++i)
+//    {
+//        if (labels[i].info == "int8" ||
+//            labels[i].info == "uint8" ||
+//            labels[i].info == "int16" ||
+//            labels[i].info == "uint16" ||
+//            labels[i].info == "int32" ||
+//            labels[i].info == "uint32"
+//            )
+//        {
+//            DBType = DB_COLUMN_INT;
+//        }
+//        else if (labels[i].info == "int64" ||
+//            labels[i].info == "uint64")
+//        {
+//            DBType = DB_COLUMN_INT64;
+//        }
+//        else if (labels[i].info == "f32")
+//        {
+//            DBType = DB_COLUMN_FLOAT;
+//        }
+//        else if (labels[i].info == "f64")
+//        {
+//            DBType = DB_COLUMN_DOUBLE;
+//        }
+//        else if (labels[i].info == "char")
+//        {
+//            DBType = DB_COLUMN_TEXT;
+//        }
+//        pTable->add_column((char*)labels[i].name.c_str(), i, DBType);
+//    }
+//
+//
+//    StringVector values;
+//    int32_t idx = 0;
+//    while (get_value_list(idx, values))
+//    {
+//        FillValues(pTable, values);
+//        idx++;
+//    }
+//
+//
+//    return true;
+//}
+//
+//void Table::add_column(const std::string& col_name, int32_t col_index, int32_t valueType) {
+//    _colu
+//}
 
 //#include <iostream>
 //#include <fstream>
@@ -449,3 +629,4 @@ bool FileInterface::ExecuteSql(const char* sSql, Table* pTable)
 //    }
 //    m_Val.clear();
 //}
+

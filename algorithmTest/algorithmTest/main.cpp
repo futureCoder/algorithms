@@ -11,7 +11,10 @@
 #include "code_buffer.h"
 
 int main() {
-    LoaderFStream ls;
-    ls.load("card_define.txt");
-    ls.get_meta_list()
+    //LoaderFStream ls;
+    //ls.load("card_define.txt");
+    //LabelVector lv;
+    //ls.get_meta_list(lv);
+    DictParser dp;
+    dp.read_file_by_line("parser_sample.txt");
 }
