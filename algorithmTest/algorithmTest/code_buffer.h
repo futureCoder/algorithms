@@ -214,6 +214,36 @@ public:
 
 };
 
+//colume Type
+enum eDBType
+{
+    DB_COLUMN_Unkonw = 0,
+    DB_COLUMN_INT = 1,
+    DB_COLUMN_INT64,
+    DB_COLUMN_FLOAT,
+    DB_COLUMN_DOUBLE,
+    DB_COLUMN_BLOB,
+    DB_COLUMN_NULL,
+    DB_COLUMN_TEXT,
+    DB_COLUMN_SMALLINT,
+    DB_COLUMN_TINYINT,
+    DB_COLUMN_BINARY,
+    DB_COLUMN_UINT,
+    DB_COLUMN_UINT64
+};
+
+class FileInterface : public LoaderFStream//, public Singleton<FileInterface>
+{
+public:
+    FileInterface();
+    virtual ~FileInterface();
+
+    virtual bool ExecuteSql(const char* sSql, Table* pTable);
+
+    void Clear();
+    void FillValues(Table* pTable, StringVector& vals); //出于对效率的考虑，最好能定义一下循环次数，上边的木有限制数量在接口中有实现，就先按最大行数进行查询取结果吧。
+};
+
 //#define MAX_CFG_LINE_SIZE 8192
 //#include <string>
 //#include <vector>

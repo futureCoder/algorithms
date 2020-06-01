@@ -189,6 +189,71 @@ std::string LoaderFStream::format_string(const std::string& str) {
     return str.substr(0, pos);
 }
 
+
+bool FileInterface::ExecuteSql(const char* sSql, Table* pTable)
+{
+    if (!sSql || !pTable)
+    {
+        return false;
+    }
+
+    Clear();
+    if (!LoaderFStream::load(sSql))
+    {
+        return false;
+    }
+
+    LabelVector labels;
+    if (!LoaderFStream::get_meta_list(labels))
+    {
+        return false;
+    }
+    int DBType = DB_COLUMN_Unkonw;
+    for (size_t i = 0; i < (size_t)labels.size(); ++i)
+    {
+        if (labels[i].info == "int8" ||
+            labels[i].info == "uint8" ||
+            labels[i].info == "int16" ||
+            labels[i].info == "uint16" ||
+            labels[i].info == "int32" ||
+            labels[i].info == "uint32"
+            )
+        {
+            DBType = DB_COLUMN_INT;
+        }
+        else if (labels[i].info == "int64" ||
+            labels[i].info == "uint64")
+        {
+            DBType = DB_COLUMN_INT64;
+        }
+        else if (labels[i].info == "f32")
+        {
+            DBType = DB_COLUMN_FLOAT;
+        }
+        else if (labels[i].info == "f64")
+        {
+            DBType = DB_COLUMN_DOUBLE;
+        }
+        else if (labels[i].info == "char")
+        {
+            DBType = DB_COLUMN_TEXT;
+        }
+        pTable->add_column((char*)labels[i].name.c_str(), i, labels[i].info/*DBType*/);
+    }
+
+
+    StringVector values;
+    int32_t idx = 0;
+    while (get_value_list(idx, values))
+    {
+        FillValues(pTable, values);
+        idx++;
+    }
+
+
+    return true;
+}
+
 //#include <iostream>
 //#include <fstream>
 //#include <string>
